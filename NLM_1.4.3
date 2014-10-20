@@ -1,0 +1,161 @@
+/*
+  NLM 1.4
+
+  Oświetlenie modelu RC typu Cesna
+  Program steruje układem diod 6-ciu LED 
+  sterowanie z odbiornika RC dla przełącznika 2-wu kanałowego
+ 
+  Program przeznaczony dla Arduino, udostępniany jest na licencji OpenSource.
+  @autor: warp3r[at]wp.pl
+  @date 2014
+  @version 1.4.3
+ */
+
+/*
+LED 1 - ZIELONY - PRAWE RAMIĘ/SKRZYDŁO
+LED 2 - CZERWONY - LEWE RAMIĘ/SKRZYDŁO
+LED 3 - BIAŁY - PRAWE RAMIĘ/SKRZYDŁO
+LED 4 - BIAŁY - LEWE RAMIĘ/SKRZYDŁO
+LED 5 - CZERWONY - BEACON
+LED 6 - BIAŁY - OGON/STATECZNIK PIONOWY/GIMBAL TYŁ
+*/
+
+/* dla ATTiny 45 1MHz i 8MHz*/
+
+// LED czerwone i zielone, stałe światło ew. z błyskami
+// czerwone na lewe skrzydło, zielone na prawe
+int led_Position = 4; // PIN 3 - LED 1-2
+
+// LED białe błyskowe na skrzydłach
+// skierowane do tyłu pod kątem 45st
+int led_WingStrobe = 3; // PIN 2 - LED 3-4
+
+// LED czerwony błyskowe
+// spód i górna część kadłuba
+int led_AntiCollision_Beacon = 1; // PIN 6 - LED 5
+
+// LED białe błyskowe, może być ew. zapalane wraz z obrysowymi
+// umieszczane w części ogonowej w kierunku świecenia do tyłu
+int led_TailStrobe = 0; // PIN 5 - LED 6
+
+// Wejście sygnału A7 z APM 2.6
+// ew. zwierane z "+5V" z BEC/RC jeśli pełne oświetlenie ma być aktywowane podczas załączania 
+int input_SignalArming = 2; // PIN 7
+
+/* Stan diod */
+// wartość dla wyłączonej diody
+const int LEDOFF = 0;
+// wartość PWM dla diody "przygaszonej"
+const int LEDON = 32;
+// wartość PWM dla pełnego oświetlenia
+const int LEDBLINK = 255;
+
+/* pomocnicze */
+int input_SignalArmingState = 0;
+boolean goArmingState = false;
+boolean wait_state = true;
+
+// Ustawienia po uruchomieniu układu
+void setup() {        
+  pinMode(led_AntiCollision_Beacon, OUTPUT);     
+  pinMode(led_WingStrobe, OUTPUT);     
+  pinMode(led_TailStrobe, OUTPUT);     
+  pinMode(led_Position, OUTPUT);     
+  pinMode(input_SignalArming, INPUT); 
+  digitalWrite(input_SignalArming, LOW);  
+  LEDS_Failsafe();
+}
+
+
+/* Aktywacja wyłącznie świateł obrysowych - pozycyjne - miganie; brak sygnału z odbiornika */
+void LEDS_Failsafe() {
+  analogWrite(led_WingStrobe, LEDBLINK);
+  analogWrite(led_AntiCollision_Beacon, LEDBLINK);  
+  analogWrite(led_Position, LEDON);
+  analogWrite(led_TailStrobe, LEDON);
+  delay(50);
+  analogWrite(led_WingStrobe, LEDOFF);
+  analogWrite(led_Position, LEDOFF);
+  analogWrite(led_TailStrobe, LEDOFF);  
+  analogWrite(led_AntiCollision_Beacon, LEDOFF);  
+  delay(40);
+  analogWrite(led_WingStrobe, LEDBLINK);
+  analogWrite(led_AntiCollision_Beacon, LEDBLINK);  
+  analogWrite(led_Position, LEDBLINK);
+  analogWrite(led_TailStrobe, LEDBLINK);
+  delay(50);
+  analogWrite(led_WingStrobe, LEDOFF);
+  analogWrite(led_Position, LEDOFF);
+  analogWrite(led_TailStrobe, LEDOFF);  
+  analogWrite(led_AntiCollision_Beacon, LEDOFF);  
+  delay(40);
+  analogWrite(led_WingStrobe, LEDBLINK);
+  analogWrite(led_AntiCollision_Beacon, LEDON);  
+  analogWrite(led_Position, LEDON);
+  analogWrite(led_TailStrobe, LEDON);
+  delay(50);
+  analogWrite(led_WingStrobe, LEDOFF);
+  analogWrite(led_Position, LEDOFF);
+  analogWrite(led_TailStrobe, LEDOFF);  
+  analogWrite(led_AntiCollision_Beacon, LEDOFF);  
+
+}
+
+/* Aktywacja wyłącznie świateł obrysowych - pozycyjne */
+void LEDS_Mode1() {
+  analogWrite(led_AntiCollision_Beacon, LEDOFF);  
+  analogWrite(led_TailStrobe, LEDON);
+  analogWrite(led_WingStrobe, LEDOFF);
+  analogWrite(led_Position, LEDON);
+}
+
+/* Aktywacja pełnego cyklu oświetlenia */
+void LEDS_Mode2() {
+  analogWrite(led_TailStrobe, LEDBLINK); 
+  analogWrite(led_WingStrobe, LEDBLINK); 
+  delay(50);
+  analogWrite(led_TailStrobe, LEDON); 
+  analogWrite(led_WingStrobe, LEDOFF); 
+  delay(50);
+  analogWrite(led_WingStrobe, LEDBLINK); 
+  analogWrite(led_Position, LEDBLINK);
+  delay(50);
+  analogWrite(led_WingStrobe, LEDOFF); 
+  analogWrite(led_Position, LEDOFF);
+  delay(50);
+  analogWrite(led_Position, LEDBLINK);
+  delay(50);
+  analogWrite(led_Position, LEDON);
+  delay(150);
+  // 400ms
+  analogWrite(led_AntiCollision_Beacon, LEDBLINK);
+  delay(50);
+  analogWrite(led_AntiCollision_Beacon, LEDOFF);
+  delay(50);
+  analogWrite(led_AntiCollision_Beacon, LEDBLINK);
+  delay(50);
+  analogWrite(led_AntiCollision_Beacon, LEDOFF);
+  delay(50);  
+  analogWrite(led_AntiCollision_Beacon, LEDBLINK);
+  delay(50);
+  analogWrite(led_AntiCollision_Beacon, LEDOFF);
+  delay(350);
+  // 1s
+}
+
+unsigned long duration;
+/* w tej pętli, program wykonuje się w nieskończoność */
+void loop() {
+  // oczekiwanie na sygnał z odbiornika RC
+  duration = pulseIn(input_SignalArming, HIGH);
+  if ((duration >900)and(duration < 1501)) {
+    LEDS_Mode1(); // jest sygnał z aparatury w odbiorniku RC, przełącznik poz.0
+  } else if (duration >1500){
+    LEDS_Mode2(); // przełącznik w aparaturze na poz. 2
+  } else {    
+    LEDS_Failsafe(); // gdy brak sygnału PWM z odbiornika RC
+  }  
+  /**/
+}
+/* a tu jest koniec kodu v1.4.3 */
+
