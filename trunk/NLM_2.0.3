@@ -1,0 +1,269 @@
+/*
+  Oświetlenie modelu RC typu Cesna 2 dla modułu 2.x
+  Program steruje układem diod LED 
+  w oparciu o sygnały z aparatury RC
+ 
+  Program przeznaczony dla Arduino, udostępniany jest na licencji OpenSource.
+  @autor: warp3r[at]wp.pl
+  @date 2014
+  @version 2.0.3
+ */
+
+/*
+WYJŚCIA
+----------------------------------------------------------------
+LED  1 - ZIELONY - PRAWE SKRZYDŁO
+LED  2 - CZERWONY - LEWE SKRZYDŁO
+LED  3 - BIAŁY - SKRZYDŁO - ŚWIATŁO STROBOSKOPOWE
+LED  4 - BIAŁY - SKRZYDŁO - ŚWIATŁO STROBOSKOPOWE
+LED  5 - CZERWONY - BEACON SPÓD
+LED  6 - CZERWONY - BEACON GÓRA
+LED  7 - BIAŁY - OGON lub STATECZNIK PIONOWY - ŚWIATŁO STROBOSKOPOWE
+LED  8 - BIAŁY - OGON lub STATECZNIK PIONOWY - ŚWIATŁO STROBOSKOPOWE
+LED  9 - ŚWIATŁA DO LĄDOWANIA
+LED 10 - FALSAFE / ŚWIATŁA DO LĄDOWANIA
+
+WEJŚCIA
+----------------------------------------------------------------
+CONN 1 - sygnał PWM z odbiornika RC, przełącznik trój-pozycyjny, światła nawigacyjne
+CONN 2 - nie używane
+CONN 3 - nie używane
+CONN 4 - nie używane
+CONN 5 - nie używane
+*/
+
+/* dla ATTiny 44 */
+
+// LED 10
+//  funkcja:  załączenie FAILSAFE po upływie w sekundach podanych w zmiennej timer_FS
+//  lub załączenie spodochronu ew. głośników typu "buzzer"
+//  może być wykorzystany jako dodatkowy obwód do sterowania światłami do lądowania
+int led_10 = 7; // PIN 10 - LED 10
+int max_FS = 5; // podawane w sekundach
+
+// LED 9
+// funkcja: załączenie oświetlenia podwozia
+//  jeśli pobór mocy LED jest większy niż 1W, należy zastosować inny obwód 
+//  lub sterować przełącznikiem załączającym oświetlenie
+//  o załączeniu świateł, decyduje zmienna led_gear
+int led_09 = 6; // PIN 9 - LED 9
+boolean led_gear;
+
+// LED 7-8
+// funkcja: światło antykolilzyjne obrysowe BIAŁE
+// tylna część statecznika pionowego lub ogonu kadłuba
+// jeśli używane będzie jedno złącze, w drugie należy włożyć zworkę
+int led_78 = 5; // PIN 8 - LED 7-8  PWM
+
+// LED 5-6
+// funkcja: BEACON światło sygnalizujące pracę silnika, spód i góra kadłuba lub statecznika pionowego
+//  zmienna led_beacon informuje czy zostały załączone silniki
+int led_56 = 4; // PIN 7 - LED 5-6  PWM
+boolean led_beacon;
+
+// LED 3-4
+// funkcja: światła antykolizyjne BIAŁE stroboskopowe na obu skrzydłach skierowane w bok lub tył
+int led_34 = 3; // PIN 6 - LED 3-4  PWM
+
+// LED 1-2
+// funkcja:  światła obrysowe, ZIELONE I CZERWONE na skrzydłach, skierowane bok 
+//  lub może być umieszczone na końcowej krawędzi skrzydeł w kierunku przód
+int led_12 = 2; // PIN 5 - LED 1-2  PWM
+
+// CONN 1, Wejście sygnału S1  -  wejście z odbiornika RC, przełącznik trójpozycyjny
+// funkcja:  załączanie oświetlenia nawigacyjnego
+//   0 - światła obrysowe
+//   1 - światła obrysowe + światła nawigacyjne
+//   2 - światła obrysowe + światła nawigacyjne + światła do lądowania
+int input_Signal1 = 8; // PIN 11
+
+// CONN 2, Wejście sygnału S2 
+int input_Signal2 = 10; // PIN 13
+
+// CONN 3, Wejście sygnału S3 
+int input_Signal3 = 9; // PIN 12
+int inTrh_Signal = 1100;
+
+// CONN 4, Wejście sygnału S4
+//  dodatkowe złącze We/Wy
+int input_Signal4 = 10; // PIN 2
+
+// CONN 5, Wejście sygnału S5
+//  dodatkowe złącze We/Wy
+int input_Signal5 = 9; // PIN 3
+
+/* Stan PWM dla diod, więcej o PWM http://arduino.cc/en/Tutorial/PWM */
+// wartość dla wyłączonej diody
+const int LEDOFF = 0;
+// wartość wypełnienia PWM dla diody "przygaszonej"
+const int LEDON = 64; // 25%
+// wartość wypełnienia PWM dla pełnego oświetlenia
+const int LEDBLINK = 255;  // 100%
+
+/* pomocnicze */
+int input_Signal1State = 0;
+boolean goArmingState = false;
+boolean wait_state = true;
+unsigned long durationS1;
+unsigned long durationS2;
+unsigned long durationS3;
+int counterFS = 0;
+
+// Ustawienia po uruchomieniu układu
+void setup() {
+  // ustawiamy stan IO, internal pull
+  pinMode(led_12, OUTPUT);     
+  pinMode(led_34, OUTPUT);     
+  pinMode(led_56, OUTPUT);     
+  pinMode(led_78, OUTPUT);     
+  pinMode(led_09, OUTPUT);     
+  pinMode(led_10, OUTPUT);     
+  pinMode(input_Signal1, INPUT); 
+  pinMode(input_Signal2, INPUT); 
+  pinMode(input_Signal3, INPUT); 
+  pinMode(input_Signal4, INPUT); 
+  pinMode(input_Signal5, INPUT); 
+  digitalWrite(input_Signal1, LOW);  
+  digitalWrite(input_Signal2, LOW);  
+  digitalWrite(input_Signal3, LOW);  
+  digitalWrite(input_Signal4, LOW);  
+  digitalWrite(input_Signal5, LOW);    
+  counterFS = 0;
+  led_beacon = false; 
+  led_gear = false;
+  LEDS_Failsafe(); // domyślnie po uruchomieniu
+}
+
+/* Wyłączenie wszystkich świateł */
+void LEDS_OFF() {
+  analogWrite(led_12, LEDOFF);
+  analogWrite(led_34, LEDOFF);  
+  analogWrite(led_56, LEDOFF);
+  analogWrite(led_78, LEDOFF);
+  analogWrite(led_09, LEDOFF);
+//  analogWrite(led_10, LEDOFF);
+}
+
+/* Włączenie wszystkich świateł */
+void LEDS_ON() {
+  analogWrite(led_12, LEDBLINK);
+  analogWrite(led_34, LEDBLINK);  
+  analogWrite(led_56, LEDBLINK);
+  analogWrite(led_78, LEDBLINK);
+  analogWrite(led_09, LEDBLINK);
+//  analogWrite(led_10, LEDBLINK);
+}
+
+/* Miganie wszystkich świateł - brak sygnału z odbiornika */
+void LEDS_Failsafe() {
+  LEDS_ON();
+  delay(50);
+  LEDS_OFF();
+  delay(40);
+  LEDS_ON();
+  delay(50);
+  LEDS_OFF();
+  delay(40);
+  LEDS_ON();
+  delay(50);
+  LEDS_OFF();
+}
+
+/* Aktywacja wyłącznie świateł obrysowych - tylko pozycyjne */
+void LEDS_Mode1() {
+  analogWrite(led_12, LEDON); // włączone obrysowe 
+  analogWrite(led_34, LEDOFF);  
+  analogWrite(led_56, LEDOFF); 
+  analogWrite(led_78, LEDON);// tylne antykolizyjne  
+  if (led_gear !=false) {
+    analogWrite(led_09, LEDBLINK);
+  } else {
+    analogWrite(led_09, LEDOFF);
+  }
+  analogWrite(led_10, LEDOFF);
+
+  if (led_beacon !=false) {
+    analogWrite(led_56, LEDBLINK);
+    delay(50);
+    analogWrite(led_56, LEDOFF);
+    delay(50);
+    analogWrite(led_56, LEDBLINK);
+    delay(50);
+    analogWrite(led_56, LEDOFF);
+    delay(50);  
+    analogWrite(led_56, LEDBLINK);
+    delay(50);
+    analogWrite(led_56, LEDOFF);
+    delay(700);
+  }
+}
+
+/* Aktywacja pełnego cyklu oświetlenia */
+void LEDS_Mode2() {
+  if (led_gear !=false) {
+    analogWrite(led_09, LEDBLINK);
+  } else {
+    analogWrite(led_09, LEDOFF);
+  }
+  analogWrite(led_34, LEDBLINK); 
+  analogWrite(led_78, LEDBLINK);
+  delay(50);
+  analogWrite(led_34, LEDOFF); 
+  analogWrite(led_78, LEDON);
+  delay(150);
+  analogWrite(led_12, LEDBLINK);
+  analogWrite(led_78, LEDBLINK);
+  delay(50);
+  analogWrite(led_12, LEDOFF);
+  analogWrite(led_78, LEDON);
+  delay(50);
+  analogWrite(led_12, LEDBLINK);
+  delay(50);
+  analogWrite(led_12, LEDON);
+  delay(50);
+  // 400 ms
+  if (led_beacon !=false) analogWrite(led_56, LEDBLINK);
+  delay(50);
+  analogWrite(led_56, LEDOFF);
+  delay(50);
+  if (led_beacon !=false) analogWrite(led_56, LEDBLINK);
+  delay(50);
+  analogWrite(led_56, LEDOFF);
+  delay(50);  
+  if (led_beacon !=false) analogWrite(led_56, LEDBLINK);
+  delay(50);
+  analogWrite(led_56, LEDOFF);
+  delay(350);
+  // 1000 ms
+}
+
+/* w tej pętli, program wykonuje się w nieskończoność */
+void loop() {  
+  // oczekiwanie na sygnał z odbiornika RC
+  durationS1 = pulseIn(input_Signal1, HIGH);
+  //counterFS = (durationS1 > 100) ? 0 : ++counterFS;
+  if (durationS1 > 0) { counterFS = 0; analogWrite(led_10, LEDOFF);} else { ++counterFS;}
+  
+  if ((durationS1 >900)and(durationS1 < 1301)) {
+    led_beacon = false;
+    led_gear = false;
+    LEDS_Mode1(); // jest sygnał z aparatury w odbiorniku RC, przełącznik poz.0
+  } else if ((durationS1 >1300)and(durationS1 < 1701)){
+    led_beacon = true;
+    led_gear = false;
+    LEDS_Mode2(); // przełącznik w aparaturze na poz. 1
+  } else if (durationS1 >1700) {
+    led_beacon = true;
+    led_gear = true;
+    LEDS_Mode2(); // przełącznik w aparaturze na poz. 2
+  } else {    
+    LEDS_Failsafe(); // gdy brak sygnału PWM z odbiornika RC
+  } 
+ 
+  if (counterFS > max_FS ) { // załączenie obwodu LED 10 - FAILSAFE
+    analogWrite(led_10, LEDBLINK);
+  }
+  /**/
+}
+/* a tu jest koniec kodu v2.0.3 */
+
