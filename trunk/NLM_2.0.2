@@ -6,22 +6,22 @@
   Program przeznaczony dla Arduino, udostępniany jest na licencji OpenSource.
   @autor: warp3r[at]wp.pl
   @date 2014
-  @version 2.0.2
+  @version 2.0.2.1
  */
 
 /*
 WYJŚCIA
 ----------------------------------------------------------------
 LED  1 - ZIELONY - PRAWE SKRZYDŁO
-LED  2 - CZERWONY - LEWE SKRZYDŁO
+LED  2 - CZERWONY - LEWE SKRZYDŁO (lub zworka)
 LED  3 - BIAŁY - SKRZYDŁO - ŚWIATŁO STROBOSKOPOWE
-LED  4 - BIAŁY - SKRZYDŁO - ŚWIATŁO STROBOSKOPOWE
+LED  4 - BIAŁY - SKRZYDŁO - ŚWIATŁO STROBOSKOPOWE (lub zworka)
 LED  5 - CZERWONY - BEACON SPÓD
-LED  6 - CZERWONY - BEACON GÓRA
+LED  6 - CZERWONY - BEACON GÓRA (lub zworka)
 LED  7 - BIAŁY - OGON/STATECZNIK PIONOWY - ŚWIATŁO STROBOSKOPOWE
-LED  8 - BIAŁY - OGON/STATECZNIK PIONOWY - ŚWIATŁO STROBOSKOPOWE
-LED  9 - ŚWIATŁA DO LĄDOWANIA
-LED 10 - FALSAFE / ŚWIATŁA DO LĄDOWANIA
+LED  8 - BIAŁY - OGON/STATECZNIK PIONOWY - ŚWIATŁO STROBOSKOPOWE (lub zworka)
+LED  9 - ŚWIATŁA DO LĄDOWANIA (max LED 1W)
+LED 10 - FALSAFE / ŚWIATŁA DO LĄDOWANIA (max LED 1W)
 
 WEJŚCIA
 ----------------------------------------------------------------
@@ -35,7 +35,7 @@ CONN 5 - nie używane
 /* dla ATTiny 44 */
 
 // LED 10
-//  funkcja:  załączenie FAILSAFE po upływie w sekundach podanych w zmiennej timer_FS
+//  funkcja:  załączenie FAILSAFE po upływie w sekundach podanych w zmiennej max_FS
 //  lub załączenie spodochronu ew. głośników typu "buzzer"
 //  może być wykorzystany jako dodatkowy obwód do sterowania światłami do lądowania
 int led_10 = 7; // PIN 10 - LED 10
@@ -86,7 +86,7 @@ int input_Signal2 = 10; // PIN 13
 // funkcja:  załączanie BEACON z chwilą uruchamiania silnika
 //  minimalna wartość THR PWM dla której BEACON jest nieaktywny należy wprowadzić w zmiennej inThr_Signal
 int input_Signal3 = 9; // PIN 12
-int inTrh_Signal = 1100;
+int inTrh_Signal = 1000;
 
 // CONN 4, Wejście sygnału S4
 //  dodatkowe złącze We/Wy
@@ -273,5 +273,5 @@ void loop() {
   }
   /**/
 }
-/* a tu jest koniec kodu v2.0.2 */
+/* a tu jest koniec kodu v2.0.2.1 */
 
