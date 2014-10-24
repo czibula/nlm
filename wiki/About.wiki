@@ -8,7 +8,7 @@ Realistic Navigation Lights Module for airplane and hexacopter.
 
 = Details =
 
-Module 1.4 :
+==Module 1.4==
   * The module works with 3W power LED.
   * 1 Inputs 
   * 6 Outputs for LEDs
@@ -18,7 +18,7 @@ Module 1.4 :
   * On the principles of open source software
   * It weighs only 9 grams
 
-Module 2.1 :
+==Module 2.1==
   * The module works with 3W power LED.
   * 5 Inputs 
   * 10 Outputs for LEDs
@@ -27,4 +27,3 @@ Module 2.1 :
   * 1W LED to light continuously
   * On the principles of open source software
   * It weighs only 9 grams
-
