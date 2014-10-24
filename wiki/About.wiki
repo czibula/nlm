@@ -2,12 +2,26 @@
 
 = Introduction =
 
-Add your content here.
+Realistic Navigation Lights Module for airplane and hexacopter.
+
 
 
 = Details =
 
-Add your content here.  Format your content with:
-  * Text in *bold* or _italic_
-  * Headings, paragraphs, and lists
-  * Automatic links to other wiki pages
+Module 1.4 :
+  * The module works with 3W power LED.
+  * 1 Inputs 
+  * 6 Outputs for LEDs
+  * Fully programmable
+  * 3W LED for strobe
+  * 1W LED to light continuously
+  * On the principles of open source software
+
+Module 2.1 :
+  * The module works with 3W power LED.
+  * 5 Inputs 
+  * 10 Outputs for LEDs
+  * Fully programmable
+  * 3W LED for strobe
+  * 1W LED to light continuously
+  * On the principles of open source software
