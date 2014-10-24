@@ -16,6 +16,7 @@ Module 1.4 :
   * 3W LED for strobe
   * 1W LED to light continuously
   * On the principles of open source software
+  * It weighs only 9 grams
 
 Module 2.1 :
   * The module works with 3W power LED.
@@ -25,3 +26,5 @@ Module 2.1 :
   * 3W LED for strobe
   * 1W LED to light continuously
   * On the principles of open source software
+  * It weighs only 9 grams
+
