@@ -1,0 +1,32 @@
+#programming.
+
+= Introduction =
+
+On this page, you will learn how a few simple steps, program your module.
+
+== What you'll need ==
+
+=== Programmer ===
+
+* Arduino Uno *
+
+* USBASP *
+
+== Details ==
+
+1. Load the source code for the Arduino IDE
+
+2. Select the type of processor
+
+http://i.imgur.com/9pYNYPw.png
+
+3. Select the type of programmer
+
+http://i.imgur.com/mhWVnM6.png
+
+4. Upload code
+
+http://i.imgur.com/BONBkPm.png
+
+
+When the source code is loaded, enjoy the new program:-)
