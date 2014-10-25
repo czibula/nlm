@@ -1,0 +1,11 @@
+#summary One-sentence summary of this page.
+
+= Video Examples =
+
+<wiki:video url="https://www.youtube.com/watch?v=p7iLgjAy32Y"/> 
+
+<wiki:video url="https://www.youtube.com/watch?v=txfMmqYapUw"/>
+
+<wiki:video url="https://www.youtube.com/watch?v=RoMD8ckd1S8"/> 
+
+<wiki:video url="https://www.youtube.com/watch?v=KqPxf9d72DM"/>
