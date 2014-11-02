@@ -27,17 +27,25 @@ http://i.imgur.com/NTqKhp3.jpg
 
 == Details ==
 
-1. Load the source code for the Arduino IDE
+1. Upload ArduinoISP sketch
 
-2. Select the type of processor
+http://i.imgur.com/P6jQVpT.png
+
+2. When sketch ArduinoISP upload, select programmer type as ArduinoISP
+
+http://i.imgur.com/yd2rMk2.png
+
+3. Load the NLM source code for the Arduino IDE
+
+4. Select the type of processor
 
 http://i.imgur.com/9pYNYPw.png
 
-3. Select the type of programmer
+5. Select the type of programmer
 
 http://i.imgur.com/mhWVnM6.png
 
-4. Upload code
+6. Upload code
 
 http://i.imgur.com/BONBkPm.png
 
