@@ -8,7 +8,7 @@ On this page, you will learn how a few simple steps, program your module.
 
 === Programmer ===
 
-Select the appropriate item from the Tools -> Programmer menu (e.g. "ArduinoISP" if you’re using an Arduino board as the programmer, USBtinyISP for the USBtinyISP). 
+Select the appropriate item from the Tools -> Programmer menu (e.g. "ArduinoISP" if you’re using an Arduino board as the programmer, USBasp for the USBasp AVR). 
 
 * Arduino Uno *
 ==== Programming ATTiny45 for module NLM 1.4 =====
