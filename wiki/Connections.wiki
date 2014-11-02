@@ -1,0 +1,16 @@
+#summary One-sentence summary of this page.
+
+= Examples of Connections =
+
+
+= NLM 1.x =
+
+http://i.imgur.com/PNi1J29.jpg
+
+= NLM 2.x =
+
+http://i.imgur.com/RxmwTpM.jpg
+
+= Suggested types of LEDs =
+
+http://i.imgur.com/nmXr35V.jpg
