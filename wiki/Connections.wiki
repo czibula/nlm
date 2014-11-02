@@ -7,13 +7,13 @@
 
 http://i.imgur.com/PNi1J29.jpg
 
-hr
+_hr_
 
 = NLM 2.x =
 
 http://i.imgur.com/RxmwTpM.jpg
 
-hr
+_hr_
 
 = Suggested types of LEDs =
 
