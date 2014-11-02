@@ -38,12 +38,18 @@ http://i.imgur.com/yd2rMk2.png
 3. Load the NLM source code for the Arduino IDE
 
 4. Select the type of processor
-
+* for NLM 2.x *
 http://i.imgur.com/9pYNYPw.png
 
-5. Select the type of programmer
+* for NLM 1.x *
+http://i.imgur.com/0wKtDDb.png
 
+5. Select the type of programmer
+* USBasp AVR *
 http://i.imgur.com/mhWVnM6.png
+
+* ArduinoISP *
+http://i.imgur.com/yd2rMk2.png
 
 6. Upload code
 
