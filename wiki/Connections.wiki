@@ -19,4 +19,12 @@ http://i.imgur.com/RxmwTpM.jpg
 
 = Suggested types of LEDs =
 
+Suggested LEDs:
+
+GREEN - PROLIGHT OPTO PM2B-3LGE-SD-W2
+
+RED   - PROLIGHT OPTO PM2B-3LRE-SD-U2
+
+WHITE - PROLIGHT OPTO PM2B-3LWE-SD-X2
+
 http://i.imgur.com/nmXr35V.jpg
