@@ -9,8 +9,19 @@ On this page, you will learn how a few simple steps, program your module.
 === Programmer ===
 
 * Arduino Uno *
+==== Programming ATTiny45 for module NLM 1.4 =====
+
+http://i.imgur.com/bOo7An8.jpg
+
+==== NLM2 Module Programming with Arduino UNO as ArduinoISP ====
+
+http://i.imgur.com/nm4zRzs.jpg
 
 * USBASP *
+
+==== NLM2 Module Programming with USBASP ====
+
+http://i.imgur.com/NTqKhp3.jpg
 
 == Details ==
 
