@@ -11,11 +11,13 @@
 switch in position 0 - marker lights <br>
 switch in position 1 - lights off <br>
 switch in position 2 - marker lights and navigation lights <br>
+Turning off the RC transmitter will automatically attach the failsafe mode with strobe flashes all the lights.<br>
 
 == ex. 2 ==
 switch in position 0 - marker lights <br>
 switch in position 1 - marker lights and navigation lights  <br>
 switch in position 2 - marker lights and navigation lights and landing gear lights<br>
+Turning off the RC transmitter will automatically attach the failsafe mode with strobe flashes all the lights.<br>
 
 http://i.imgur.com/7tdbbAI.jpg
 
