@@ -8,10 +8,8 @@
 *Switching on the navigation lights shall be held in the three-position switch on the transmitter RC.
 
 switch in position 0 - marker lights <br>
-
-switch in position 1 - lights off
-
-switch in position 2 - marker lights and navigation lights *
+switch in position 1 - lights off <br>
+switch in position 2 - marker lights and navigation lights <br>*
 
 http://i.imgur.com/7tdbbAI.jpg
 
