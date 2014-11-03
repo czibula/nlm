@@ -32,8 +32,14 @@ http://i.imgur.com/RxmwTpM.jpg
 Turning marker lights and navigation lights is done by a three-position switch is in the RC transmitter via the CONN-1.<br>
 Landing lights are activated automatically with retractable landing gear control signal on the connector CONN-2.<br>
 Beacon Light switches on automatically when you run the engine via the CONN-3.<br>
+Turning off the RC transmitter will automatically attach the failsafe mode with strobe flashes all the lights.<br>
+After a preset time (default is not 5 seconds.) turn on circuit LED-10.<br>
 
-
+== ex. 2 ==
+Turning marker lights and navigation lights is done by a three-position switch is in the RC transmitter via the CONN-1.<br>
+Landing lights are activated automatically with retractable landing gear control signal on the connector CONN-2.<br>
+Remote activation of camera shutter on the connector CONN-3.<br>
+Beacon Light switches on automatically when you run the engine via the CONN-4 and EDF highlighting turbine with throttle position.<br>
 
 = Suggested types of LEDs =
 
