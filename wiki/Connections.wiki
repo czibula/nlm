@@ -7,6 +7,8 @@
 
 *Switching on the navigation lights shall be held in the three-position switch on the transmitter RC.*
 
+http://i.imgur.com/7tdbbAI.jpg
+
 == ex. 1 == 
 switch in position 0 - marker lights <br>
 switch in position 1 - lights off <br>
@@ -19,8 +21,6 @@ switch in position 1 - marker lights and navigation lights  <br>
 switch in position 2 - marker lights and navigation lights and landing gear lights<br>
 Turning off the RC transmitter will automatically attach the failsafe mode with strobe flashes all the lights.<br>
 
-http://i.imgur.com/7tdbbAI.jpg
-
 
 
 
@@ -28,6 +28,10 @@ http://i.imgur.com/7tdbbAI.jpg
 
 http://i.imgur.com/RxmwTpM.jpg
 
+== ex. 1 ==
+Turning marker lights and navigation lights is done by a three-position switch is in the RC transmitter via the CONN-1.<br>
+Landing lights are activated automatically with retractable landing gear control signal on the connector CONN-2.<br>
+Beacon Light switches on automatically when you run the engine via the CONN-3.<br>
 
 
 
