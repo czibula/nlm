@@ -43,6 +43,11 @@ Landing lights are activated automatically with retractable landing gear control
 Remote activation of camera shutter on the connector CONN-3.<br>
 Beacon Light switches on automatically when you run the engine via the CONN-4 and EDF highlighting turbine with throttle position.<br>
 
+== ex. 3 ==
+Navigation Lights & Retractable Landing Gear & Door Sequencer
+
+http://i.imgur.com/R5YRON6.jpg
+
 = Suggested types of LEDs =
 
 Suggested LEDs:
