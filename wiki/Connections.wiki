@@ -44,7 +44,7 @@ Remote activation of camera shutter on the connector CONN-3.<br>
 Beacon Light switches on automatically when you run the engine via the CONN-4 and EDF highlighting turbine with throttle position.<br>
 
 == ex. 3 ==
-Navigation Lights & Retractable Landing Gear & Door Sequencer
+* Navigation Lights & Retractable Landing Gear and Door Sequencer *
 
 http://i.imgur.com/R5YRON6.jpg
 
