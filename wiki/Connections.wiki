@@ -50,12 +50,10 @@ http://i.imgur.com/R5YRON6.jpg
 
 = Suggested types of LEDs =
 
-Suggested LEDs:
-
-GREEN - PROLIGHT OPTO PM2B-3LGE-SD-W2
-
-RED   - PROLIGHT OPTO PM2B-3LRE-SD-U2
-
-WHITE - PROLIGHT OPTO PM2B-3LWE-SD-X2
+* Suggested LEDs 100-200 lm *
+Please be careful, these are not ordinary LED 10000-15000mcd!<br>
+GREEN - PROLIGHT OPTO PM2B-3LGE-SD-W2<br>
+RED   - PROLIGHT OPTO PM2B-3LRE-SD-U2<br>
+WHITE - PROLIGHT OPTO PM2B-3LWE-SD-X2<br>
 
 http://i.imgur.com/nmXr35V.jpg
