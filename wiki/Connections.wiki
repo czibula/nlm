@@ -46,7 +46,7 @@ Beacon Light switches on automatically when you run the engine via the CONN-4 an
 == ex. 3 ==
 * Navigation Lights & Retractable Landing Gear and Door Sequencer *
 
-http://i.imgur.com/R5YRON6.jpg
+http://i.imgur.com/g4iFUye.jpg
 
 = Suggested types of LEDs =
 
