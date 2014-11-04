@@ -13,11 +13,11 @@ Select the appropriate item from the Tools -> Programmer menu (e.g. "ArduinoISP"
 * Arduino Uno *
 ==== Programming ATTiny45 for module NLM 1.4 =====
 
-http://i.imgur.com/efeQQwZ.jpg
+http://i.imgur.com/H8jKHo7.jpg
 
 ==== NLM2 Module Programming with Arduino UNO as ArduinoISP ====
 
-http://i.imgur.com/nm4zRzs.jpg
+http://i.imgur.com/dwQnyhe.jpg
 
 * USBASP *
 
