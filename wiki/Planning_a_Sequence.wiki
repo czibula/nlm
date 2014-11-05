@@ -1,6 +1,6 @@
-#summary One-sentence summary of this page.
+#Planning a Sequence.
 
-= Planning a Sequence=
+= Planning a Sequence =
 
 http://i.imgur.com/qMdsiFn.jpg
 
