@@ -32,3 +32,7 @@ http://i.imgur.com/GFADWe9.png
 == 192 ==
 
 http://i.imgur.com/G8nFFMj.png
+
+= Arduino =
+
+More on PWM Arduino, you will [http://arduino.cc/en/Tutorial/PWM find here]
