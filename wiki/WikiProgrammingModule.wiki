@@ -59,3 +59,5 @@ http://i.imgur.com/BONBkPm.png
 
 
 When the source code is loaded, enjoy the new program:-)
+
+[https://code.google.com/p/nlm/wiki/PWM_with_NLM PWM with NLM]
