@@ -47,4 +47,33 @@ void LEDS_Mode1 () {}
 void LEDS_Mode2 () {}
 </code>
 
+If your RC model requires more lighting modes, use the syntax of what has been proposed above.
+For example, you want to have a mode 3 and 4, write the source code of the function names, respectively:
+<code>
+void LEDS_Mode3 () {}
+void LEDS_Mode4 () {}
+</code>
+
+== Operation of signals at the inputs of the module ==
+
+The input signals are interpreted by the code. Most often it will use the internal functions of the Arduino environment:
+<code>
+pulseIn ()
+analogRead ()
+</code>
+Typically, PPM-PWM signal from the receiver RC, these values are from 900 to 2200, therefore, the source code must be used to read the value of _int_ or _unsigned long_.
+
+In the source code NLM find the most relevant variables for reading the value of individual inputs:
+<code>
+unsigned long durationS1;
+unsigned long durationS2;
+unsigned long durationS3;
+unsigned long durationS4;
+unsigned long durationS5;
+</code>
+
+
+
+== Mode ==
+
 More about how to program source code, please visit the project [http://arduino.cc/en/Reference/HomePage Arduino.]
