@@ -19,9 +19,9 @@ const byte LEDOFF   = 0;
 const byte LEDON    = 32;
 const byte LEDBLINK = 192;
 </code>
-Typical values for these constants are in the range of 0 to 255.
+Typical values for these constants are in the range of 0 to 255.<br>
 [https://code.google.com/p/nlm/wiki/PWM_with_NLM Here you will find information on using the values for these constants, on the effect that you get in the output circuit.]
-
+<br>
 == Variable values ==
 Output module circuits correspond to the respective outputs of the microprocessor.
 In the source code, are marked with the prefix <code>led_nn</code>
