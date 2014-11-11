@@ -22,8 +22,8 @@ Typical values for these constants are in the range of 0 to 255.
 
 == Variable values ==
 Output module circuits correspond to the respective outputs of the microprocessor.
-In the source code, are marked with the prefix led/_ _nn_,
-where [nn] corresponds to the numbers marked on the module outputs as LED-_nn_.
+In the source code, are marked with the prefix <code>led_ _nn_</code>
+where _nn_ corresponds to the numbers marked on the module outputs as LED-_nn_.
 
 Input circuitry of the module correspond to the respective inputs of the microprocessor, 
-are marked with the prefix input_Signal _n_, where _n_ is the number of connections for the module respectively CONN-_n_.
+are marked with the prefix <code>input_Signal_n_</code> where _n_ is the number of connections for the module respectively CONN-_n_.
