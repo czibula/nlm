@@ -6,8 +6,7 @@ http://i.imgur.com/6oxV3bK.jpg
 
 For double circuit if it is plugged only one LED, use the jumper in place of the second diode.
 
-= Examples of Connections =
-
+= Examples of applications =
 
 = NLM 1.x =
 
