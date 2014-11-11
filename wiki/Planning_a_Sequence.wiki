@@ -2,10 +2,13 @@
 
 = Planning a Sequence =
 
+_Pilot on board. Engines Off._ <br>
 http://i.imgur.com/L7v3OAV.jpg
 
+_Normal flight mode. Navigating the taxiway._ <br>
 http://i.imgur.com/BgE9XGF.jpg
 
+_Normal flight mode. Navigating the taxiway. Engine On_ <br>
 http://i.imgur.com/xChcPHJ.jpg
 
 Sample code for the example above.
