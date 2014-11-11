@@ -3,7 +3,7 @@
 
 == Comments ==
 Comments are preceded by a description, as well as placed at the end of the line to which they relate.
-Text description znkami placed between "/*" and "*/", as well as text prefixed with // means a comment.
+The text between the characters <code>/*</code> and <code>*/</code>, as well as text prefixed with <code>//</code> means a comment.
 
 == Fixed values ==
 Begin with the prefix indicates the type of value.
@@ -13,11 +13,11 @@ Three solid, determine how light will be emitted to the output circuit LEDs.
 The NLM-1 applies to all outputs, for NLM-2 applies only to go out LED1-8. 
 The values of these constants can be changed to customize their own preferences. 
 You can also extend the source code with the following values of what you require.
-
+<code>
 const byte LEDOFF = 0
 const byte LEDON = 32
 const byte LEDBLINK = 192
-
+</code>
 Typical values for these constants are in the range of 0 to 255.
 
 == Variable values ==
