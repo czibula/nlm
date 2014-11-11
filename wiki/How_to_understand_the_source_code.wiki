@@ -57,6 +57,7 @@ void LEDS_Mode4 () {}</code>
 The input signals are interpreted by the code. Most often it will use the internal functions of the Arduino environment:
 <code>
 pulseIn ()
+digitalRead ()
 analogRead ()</code>
 Typically, PPM-PWM signal from the receiver RC, these values are from 900 to 2200, therefore, the source code must be used to read the value of _int_ or _unsigned long_.
 
