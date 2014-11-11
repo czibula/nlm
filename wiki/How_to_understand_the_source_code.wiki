@@ -75,6 +75,6 @@ unsigned long durationS5;
 
 
 
-== Mode ==
+== More about programming in the Arduino IDE ==
 
 More about how to program source code, please visit the project [http://arduino.cc/en/Reference/HomePage Arduino.]
