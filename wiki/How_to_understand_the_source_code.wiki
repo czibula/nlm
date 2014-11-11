@@ -28,11 +28,11 @@ where _nn_ corresponds to the numbers marked on the module outputs as LED-_nn_.
 Input circuitry of the module correspond to the respective inputs of the microprocessor, 
 are marked with the prefix <code>input_Signal n</code> where _n_ is the number of connections for the module respectively CONN-_n_.
 
-= Functions =
+== Functions ==
 The source code is divided into functional blocks, carrying out certain tasks.
 Block source code, marked feature is preceded by the prefix "void" which is a string indicating the name of the Function. The function code is placed between the braces "{}".
 
-For the Arduino environment, the necessary features that must be present in the code, it
+For the Arduino environment, the necessary functions that must be present in the code, it
 <code>
 void setup () {}
 void loop () {}
@@ -45,3 +45,5 @@ void LEDS_Failsafe () {}
 void LEDS_Mode1 () {}
 void LEDS_Mode2 () {}
 </code>
+
+More about how to program source code, please visit the project [http://arduino.cc/en/Reference/HomePage Arduino.]
