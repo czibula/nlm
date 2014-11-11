@@ -1,4 +1,8 @@
-#Examples of Connections
+= Connections =
+
+The LEDs should be connected according to the following
+
+http://i.imgur.com/6oxV3bK.jpg
 
 = Examples of Connections =
 
