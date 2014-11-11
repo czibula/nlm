@@ -14,16 +14,16 @@ The NLM-1 applies to all outputs, for NLM-2 applies only to go out LED1-8.
 The values of these constants can be changed to customize their own preferences. 
 You can also extend the source code with the following values of what you require.
 <code>
-const byte LEDOFF = 0
-const byte LEDON = 32
-const byte LEDBLINK = 192
+const byte LEDOFF   = 0;
+const byte LEDON    = 32;
+const byte LEDBLINK = 192;
 </code>
 Typical values for these constants are in the range of 0 to 255.
 
 == Variable values ==
 Output module circuits correspond to the respective outputs of the microprocessor.
-In the source code, are marked with the prefix led_ [nn],
-where [nn] corresponds to the numbers marked on the module outputs as LED- [nn].
+In the source code, are marked with the prefix led/_ _nn_,
+where [nn] corresponds to the numbers marked on the module outputs as LED-_nn_.
 
 Input circuitry of the module correspond to the respective inputs of the microprocessor, 
-are marked with the prefix input_Signal [n], where [n] is the number of connections for the module respectively CONN- [n].
+are marked with the prefix input_Signal _n_, where _n_ is the number of connections for the module respectively CONN-_n_.
