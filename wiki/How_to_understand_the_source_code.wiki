@@ -1,0 +1,29 @@
+#summary One-sentence summary of this page.
+= How to understand the source code =
+
+== Comments ==
+Comments are preceded by a description, as well as placed at the end of the line to which they relate.
+Text description znkami placed between / * and * /, as well as text prefixed with // means a comment.
+
+== Fixed values ==
+Begin with the prefix indicates the type of value.
+
+The values for brightness in relation to the value of the PWM.
+Three solid, determine how light will be emitted to the output circuit LEDs. 
+The NLM-1 applies to all outputs, for NLM-2 applies only to go out LED1-8. 
+The values of these constants can be changed to customize their own preferences. 
+You can also extend the source code with the following values of what you require.
+
+const byte LEDOFF = 0
+const byte LEDON = 32
+const byte LEDBLINK = 192
+
+Typical values for these constants are in the range of 0 to 255.
+
+== Variable values ==
+Output module circuits correspond to the respective outputs of the microprocessor.
+In the source code, are marked with the prefix led_ [nn],
+where [nn] corresponds to the numbers marked on the module outputs as LED- [nn].
+
+Input circuitry of the module correspond to the respective inputs of the microprocessor, 
+are marked with the prefix input_Signal [n], where [n] is the number of connections for the module respectively CONN- [n].
