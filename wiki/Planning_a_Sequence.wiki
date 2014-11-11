@@ -8,6 +8,54 @@ http://i.imgur.com/BgE9XGF.jpg
 
 http://i.imgur.com/xChcPHJ.jpg
 
-
-
-
+Sample code for the example above.
+<code>
+/* Mode 2 with beacon and landing lights */
+void LEDS_Mode2() {
+  if (led_gear !=false) {
+    analogWrite(led_09, LEDBLINK);
+  } else {
+    analogWrite(led_09, LEDOFF);
+  }
+  analogWrite(led_34, LEDBLINK); 
+  analogWrite(led_78, LEDBLINK);
+  delay(50);
+  analogWrite(led_34, LEDOFF); 
+  analogWrite(led_78, LEDOFF);
+  delay(50);
+  // 100 ms
+  analogWrite(led_12, LEDBLINK);
+  analogWrite(led_78, LEDBLINK);
+  delay(50);
+  analogWrite(led_12, LEDOFF);  
+  analogWrite(led_78, LEDOFF);
+  delay(50);
+  // 200 ms
+  analogWrite(led_12, LEDBLINK);
+  analogWrite(led_78, LEDBLINK);
+  delay(50);
+  analogWrite(led_12, LEDOFF);
+  analogWrite(led_78, LEDON);
+  delay(50);
+  // 300 ms
+  analogWrite(led_12, LEDBLINK);
+  delay(50);
+  analogWrite(led_12, LEDON);
+  delay(50);
+  // 400 ms
+  if (led_beacon !=false) analogWrite(led_56, LEDBLINK);
+  delay(50);
+  analogWrite(led_56, LEDOFF);
+  delay(50);
+  // 500 ms
+  if (led_beacon !=false) analogWrite(led_56, LEDBLINK);
+  delay(50);
+  analogWrite(led_56, LEDOFF);
+  delay(50);  
+  // 600 ms
+  if (led_beacon !=false) analogWrite(led_56, LEDBLINK);
+  delay(50);
+  analogWrite(led_56, LEDOFF);
+  delay(350);
+  // 1000 ms
+} </code>
