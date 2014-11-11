@@ -3,12 +3,12 @@
 = How to understand the source code =
 
 table of contents
-[https://code.google.com/p/nlm/w/edit/How_to_understand_the_source_code#comments Comments]
-[https://code.google.com/p/nlm/w/edit/How_to_understand_the_source_code#fixedvaule Fixed values]
-[https://code.google.com/p/nlm/w/edit/How_to_understand_the_source_code#variablevaules Variable vaules]
-[https://code.google.com/p/nlm/w/edit/How_to_understand_the_source_code#functions Functions]
-[https://code.google.com/p/nlm/w/edit/How_to_understand_the_source_code#operation_of_signals Operation of signals at the inputs of the module]
-[https://code.google.com/p/nlm/w/edit/How_to_understand_the_source_code More about programming in the Arduino IDE]
+[https://code.google.com/p/nlm/wiki/How_to_understand_the_source_code#comments Comments]
+[https://code.google.com/p/nlm/wiki/How_to_understand_the_source_code#fixedvaule Fixed values]
+[https://code.google.com/p/nlm/wiki/How_to_understand_the_source_code#variablevaules Variable vaules]
+[https://code.google.com/p/nlm/wiki/How_to_understand_the_source_code#functions Functions]
+[https://code.google.com/p/nlm/wiki/How_to_understand_the_source_code#operation_of_signals Operation of signals at the inputs of the module]
+[https://code.google.com/p/nlm/wiki/How_to_understand_the_source_code#more More about programming in the Arduino IDE]
 
 #comments
 == Comments ==
@@ -83,7 +83,7 @@ unsigned long durationS4;
 unsigned long durationS5;</code>
 
 
-
+#more
 == More about programming in the Arduino IDE ==
 
 More about how to program source code, please visit the project [http://arduino.cc/en/Reference/HomePage Arduino.]
