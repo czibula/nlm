@@ -33,7 +33,7 @@ http://i.imgur.com/dwQnyhe.jpg
 
 http://i.imgur.com/P6jQVpT.png
 
-2. When sketch ArduinoISP upload, select programmer type as ArduinoISP
+2. When sketch ArduinoISP upload, open NLM source code and select programmer type as ArduinoISP
 
 http://i.imgur.com/yd2rMk2.png
 
