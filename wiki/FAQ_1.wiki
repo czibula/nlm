@@ -28,9 +28,9 @@ For systems that do not require high current loads, eg. Camera shutter, for exam
 
 == Landing lights are activated inversely to the landing gear. How to set reverse programmatically? ==
 If there is no source code with prefix revers_gear variable, usually is on the line as follows:
-<code>led_gear = (durationS2 <1700)? true: false;</code>
+<code>led_gear = (durationS2 < 1700)? true: false;</code>
 just change the sign to the opposite when compared to the value of:
-<code>led_gear = (durationS2> 1700)? true: false;</code>
+<code>led_gear = (durationS2 > 1700)? true: false;</code>
 
 == ATTINY44 microprocessor has only 4 PWM outputs, where so many NLM2 module? ==
 Truth. ATTiny44 has only 4 PWM outputs implemented "hardware" and for all outputs, PWM signal can be implemented in software. All inputs of the module can handle the PWM signal input. 
@@ -46,4 +46,3 @@ Thus necessarily must then calculate that the total current consumption of the L
 Datasheets LEDs indicate the parameters such as brightness and Instant light.
 In the case of the module of the PWM, should choose these diodes, which have the longest Instant light at the highest luminance level.
 This significantly reduces the consumption of electric power consumed by a circuit when we use the PWM value less filling while still maintaining a sufficient level of brightness of the LEDs. 
-
