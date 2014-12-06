@@ -12,7 +12,7 @@ For double circuit if it is plugged only one LED, use the jumper in place of the
 
 *Switching on the navigation lights shall be held in the three-position switch on the transmitter RC.*
 
-http://i.imgur.com/7tdbbAI.jpg
+http://i.imgur.com/6wf9wzl.jpg
 
 == ex. 1 == 
 switch in position 0 - marker lights <br>
