@@ -19,13 +19,13 @@ http://i.imgur.com/52fpwfm.jpg
 
 ==== NLM2 Module Programming with Arduino UNO as ArduinoISP ====
 
-http://i.imgur.com/H8jKHo7.jpg
+http://i.imgur.com/qwaxiaM.jpg
 
 * USBASP *
 
 ==== NLM2 Module Programming with USBASP ====
 
-http://i.imgur.com/dwQnyhe.jpg
+http://i.imgur.com/OkV8Wvn.jpg
 
 == Details ==
 
