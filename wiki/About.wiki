@@ -4,7 +4,7 @@
 === Connections ===
 [https://code.google.com/p/nlm/wiki/Connections Examples of ways to connect modules.]
 
-=== secondly, select your type of aircraft and download code ===
+=== source code ===
 
 [https://code.google.com/p/nlm/source/browse/#svn%2Ftrunk SVN Trunk]
 
@@ -16,6 +16,8 @@
 [https://code.google.com/p/nlm/wiki/How_to_understand_the_source_code How to understand the source code]
 
 [https://code.google.com/p/nlm/wiki/PWM_with_NLM How to understand the impact of the PWM signal on the output of the module.]
+
+=== Additional functionality ===
 
 [https://code.google.com/p/nlm/wiki/VoltageFailsafeAlarm Voltage Failsafe Alarm with NLM2]
 
