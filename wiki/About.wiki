@@ -27,7 +27,7 @@
 
 [https://code.google.com/p/nlm/source/browse/wiki/Instrukcja+Modul+Oswietlenia+v1.4.pdf Manual NLM 1.x PL]
 
-[https://nlm.googlecode.com/svn/wiki/Instrukcja%20Modul%20v2.1.pdf manual NLM 2.x PL]
+[https://nlm.googlecode.com/svn/wiki/Instrukcja%20Modul%20v2.1.pdf Manual NLM 2.x PL]
 
 [https://code.google.com/p/nlm/wiki/Planning_of_lights Planning of lights]
 
