@@ -8,11 +8,6 @@
 
 [https://code.google.com/p/nlm/source/browse/#svn%2Ftrunk SVN Trunk]
 
-=== Prepare the Arduino environment ===
-
-https://code.google.com/p/arduino-tiny/
-
-http://www.arduino.cc/
 
 === Programming module ===
 
@@ -37,3 +32,10 @@ http://www.arduino.cc/
 [https://code.google.com/p/nlm/wiki/Planning_a_Sequence Planning a Sequence]
 
 [https://code.google.com/p/nlm/wiki/VideoExamples or select from the examples]
+
+
+=== Prepare the Arduino environment ===
+
+https://code.google.com/p/arduino-tiny/
+
+http://www.arduino.cc/
