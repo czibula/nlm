@@ -1,8 +1,9 @@
 #videoswitch
 = Video Switch =
 
-The module can be used with a switch video sources.
-Switching cameras, done by select switch from the transmitter.
+The module can be used with a switch video sources.<br>
+Making the switch is easy and cheap.<br>
+Switching cameras, done by select switch from the transmitter.<br>
 
 The sample application.
 
@@ -25,20 +26,32 @@ with code
 byte output_Signal4 = 10; // PIN 2
 byte output_Signal5 = 9;  // PIN 3</code>
 
-The function <i>loop()</i> add the following code
+In function <i>setup()</i> add the following code
 <code>
   pinMode(output_Signal4, OUTPUT);     
   pinMode(output_Signal5, OUTPUT); 
   digitalWrite(output_Signal4, LOW);
   digitalWrite(output_Signal5, LOW);</code>
 
+In function <i>loop()</i> add the following code
+<code>  duration = pulseIn(input_Signal3, HIGH);
+  if (duration < 1601) {
+    digitalWrite(output_Signal4, HIGH);
+    digitalWrite(output_Signal5, LOW);
+  } else if (duration >1600){
+    digitalWrite(output_Signal4, LOW);
+    digitalWrite(output_Signal5, HIGH);
+  } 
+</code>
 
 
-
-
-Implementation independent of the switch is easy.
+Remember, the connector CONN-4 and CONN-5, do not have GND. You need to use a different connector cable to connect the GND, or solder the cable directly.
 
 Scheme of the video switch.<br>
-http://i.imgur.com/ld0X5pP.png http://i.imgur.com/jLL8uoz.png
+http://i.imgur.com/ld0X5pP.png    http://i.imgur.com/jLL8uoz.png
 
-
+Required parts:<br>
+1x ILD206 or similar<br>
+2x 1k resistor<br>
+1x pcb<br>
+5x 2x1 connector<br>
