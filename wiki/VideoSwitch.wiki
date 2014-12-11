@@ -1,0 +1,44 @@
+#videoswitch
+= Video Switch =
+
+The module can be used with a switch video sources.
+Switching cameras, done by select switch from the transmitter.
+
+The sample application.
+
+http://i.imgur.com/tE3umtR.jpg
+
+= Sample source code =
+
+If you are based on the source code contained in the trunk, replace the following:
+<code>
+// CONN 4, Wejście sygnału S4
+//  dodatkowe złącze We/Wy
+byte input_Signal4 = 10; // PIN 2
+
+// CONN 5, Wejście sygnału S5
+//  dodatkowe złącze We/Wy
+byte input_Signal5 = 9; // PIN 3</code>
+
+with code
+<code>
+byte output_Signal4 = 10; // PIN 2
+byte output_Signal5 = 9;  // PIN 3</code>
+
+The function <i>loop()</i> add the following code
+<code>
+  pinMode(output_Signal4, OUTPUT);     
+  pinMode(output_Signal5, OUTPUT); 
+  digitalWrite(output_Signal4, LOW);
+  digitalWrite(output_Signal5, LOW);</code>
+
+
+
+
+
+Implementation independent of the switch is easy.
+
+Scheme of the video switch.<br>
+http://i.imgur.com/ld0X5pP.png http://i.imgur.com/jLL8uoz.png
+
+
