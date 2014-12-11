@@ -1,29 +1,39 @@
 #about.
+= Realistic Navigation Lights Module =
 
-= Introduction =
+=== Connections ===
+[https://code.google.com/p/nlm/wiki/Connections Examples of ways to connect modules.]
 
-Realistic Navigation Lights Module for airplane and hexacopter.
+=== secondly, select your type of aircraft and download code ===
 
+[https://code.google.com/p/nlm/source/browse/#svn%2Ftrunk SVN Trunk]
 
+=== Prepare the Arduino environment ===
 
-= Details =
+https://code.google.com/p/arduino-tiny/
 
-==Module 1.4==
-  * The module works with 3W power LED.
-  * 1 Inputs 
-  * 6 Outputs for LEDs
-  * Fully programmable
-  * 3W LED for strobe
-  * 1W LED to light continuously
-  * On the principles of open source software
-  * It weighs only 9 grams
+http://www.arduino.cc/
 
-==Module 2.1==
-  * The module works with 3W power LED.
-  * 5 Inputs 
-  * 10 Outputs for LEDs
-  * Fully programmable
-  * 3W LED for strobe
-  * 1W LED to light continuously
-  * On the principles of open source software
-  * It weighs only 9 grams
+=== Programming module ===
+
+[https://code.google.com/p/nlm/wiki/WikiProgrammingModule How To Programming module]
+
+[https://code.google.com/p/nlm/wiki/How_to_understand_the_source_code How to understand the source code]
+
+[https://code.google.com/p/nlm/wiki/PWM_with_NLM How to understand the impact of the PWM signal on the output of the module.]
+
+[https://code.google.com/p/nlm/wiki/VoltageFailsafeAlarm Voltage Failsafe Alarm with NLM2]
+
+[https://code.google.com/p/nlm/wiki/VideoSwitch Video Switch RC]
+
+=== Read the the instruction manual and start playing ===
+
+[https://code.google.com/p/nlm/source/browse/wiki/Instrukcja+Modul+Oswietlenia+v1.4.pdf Manual NLM 1.x PL]
+
+[https://nlm.googlecode.com/svn/wiki/Instrukcja%20Modul%20v2.1.pdf manual NLM 2.x PL]
+
+[https://code.google.com/p/nlm/wiki/Planning_of_lights Planning of lights]
+
+[https://code.google.com/p/nlm/wiki/Planning_a_Sequence Planning a Sequence]
+
+[https://code.google.com/p/nlm/wiki/VideoExamples or select from the examples]
