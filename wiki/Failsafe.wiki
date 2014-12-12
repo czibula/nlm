@@ -3,7 +3,7 @@
 
 = Failsafe =
 
-Failsafe NLMs used for switching lights, alarm buzzer sound for example, or a parachute.
+Failsafe NLMs used for switching lights, alarm buzzer, or a parachute.
 
 == Enabling Failsafe ==
 
