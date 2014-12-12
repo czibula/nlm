@@ -17,11 +17,11 @@ To convert the voltage to temperature, simply use the basic formula:
 Temperature in °C = (Vout in mV) / 10
 
 For NLM 2.1 with internal supply 5V<br>
-Voltage at voltage_input_Signal4 = durationS4 * ( 5000 / 1024 )<br> 
+<code>Voltage at voltage_input_Signal4 = durationS4 * ( 5000 / 1024 )</code> 
 This formula converts the number 0-1023 from the input_Signal4 into 0-5V
 
 For NLM 2.2 with internal supply 3.3V<br>
-Voltage at voltage_input_Signal4 = input_Signal4 * ( 3300 / 1024 )<br> 
+<code>Voltage at voltage_input_Signal4 = input_Signal4 * ( 3300 / 1024 )</code> 
 This formula converts the number 0-1023 from the input_Signal4 into 3.3V
 
 
