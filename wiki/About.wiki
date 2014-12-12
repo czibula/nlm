@@ -27,6 +27,8 @@
 
 [https://code.google.com/p/nlm/wiki/VideoSwitch Video Switch RC]
 
+Retractable Landing Gear and Door Sequencer
+
 === Read the the instruction manual and start playing ===
 
 [https://code.google.com/p/nlm/source/browse/wiki/Instrukcja+Modul+Oswietlenia+v1.4.pdf Manual NLM 1.x PL]
