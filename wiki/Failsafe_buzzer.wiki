@@ -12,7 +12,7 @@ The easiest way is to use a cheap buzzer 5V. Output NLM LED_10 the easiest way t
 http://i.imgur.com/cV2w9X0.jpg
 
 
-== Applilcation ==
+== Example of use ==
 
 Sample use buzzer, for supply voltage 2S and 3S.
 
