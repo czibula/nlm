@@ -1,0 +1,11 @@
+#failsafe
+
+= Temperature Failsafe =
+
+= Overview =
+
+= Connecting to a Temperature Sensor =
+
+= Reading the Analog Temperature Data =
+
+= Example Projects =
