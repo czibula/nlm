@@ -10,7 +10,7 @@ Failsafe NLMs used for switching lights, alarm buzzer sound for example, or a pa
 Failsafe mode can be activated automatically or on request from the transmitter :
    * Loss of signal in the receiver,
    * [https://code.google.com/p/nlm/wiki/VoltageFailsafeAlarm Power supply voltage drop below a preset threshold],
-   * The temperature rise of a sensor,
+   * [https://code.google.com/p/nlm/wiki/Failsafe_temperature The temperature rise of a sensor],
    * Or at the request from the transmitter,
 
 Each mode Failsafe, requires a different way of NLM controller software.
