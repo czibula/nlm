@@ -19,7 +19,7 @@ Each mode Failsafe, requires a different way of NLM controller software.
 
 For each of the fail-safe mode, you can assign the appropriate operation mode. Are possible to obtain:
    * [https://code.google.com/p/nlm/wiki/Failsafe_strobe Light switch strobe mode],
-   * Inclusion of audible signals,
+   * [https://code.google.com/p/nlm/wiki/Failsafe_buzzer Inclusion of audible signals],
    * [https://code.google.com/p/nlm/wiki/Failsafe_parachute Release the parachute],
    * Engine cut-off,
    * Set the servos in a predetermined position.
