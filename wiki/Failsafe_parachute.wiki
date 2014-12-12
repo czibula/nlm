@@ -14,9 +14,9 @@ However, if the release you are using an electromagnetic micro switch, you can u
 == Actions ==
 
 Releasing a parachute, you can be when:
-* Turn on the switch to open the parachute from the transmitter,
-* Main supply voltage falls below the limit value,
-* Lose signal in the receiver.
+   * Turn on the switch to open the parachute from the transmitter,
+   * Main supply voltage falls below the limit value,
+   * Lose signal in the receiver.
 
 == Parachute ==
 
