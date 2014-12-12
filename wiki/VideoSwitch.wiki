@@ -37,8 +37,8 @@ In function <i>setup()</i> add the following code
 In function <i>loop()</i> add the following code
 <code>  duration = pulseIn(input_Signal3, HIGH);
   if (duration < 1601) {
-    digitalWrite(output_Signal4, HIGH);
     digitalWrite(output_Signal5, LOW);
+    digitalWrite(output_Signal4, HIGH);
   } else if (duration >1600){
     digitalWrite(output_Signal4, LOW);
     digitalWrite(output_Signal5, HIGH);
