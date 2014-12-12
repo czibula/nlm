@@ -17,6 +17,10 @@
 
 [https://code.google.com/p/nlm/wiki/PWM_with_NLM How to understand the impact of the PWM signal on the output of the module.]
 
+=== Failsafe mode ===
+
+[https://code.google.com/p/nlm/wiki/Failsafe Enabling and failsafe mode operation.]
+
 === Additional functionality ===
 
 [https://code.google.com/p/nlm/wiki/VoltageFailsafeAlarm Voltage Failsafe Alarm with NLM2]
