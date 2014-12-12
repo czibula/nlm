@@ -5,7 +5,7 @@
 
 Failsafe NLMs used for switching lights, alarm buzzer sound for example, or a parachute.
 
-= Enabling Failsafe =
+== Enabling Failsafe ==
 
 Failsafe mode can be activated automatically or on request from the transmitter :
    * Loss of signal in the receiver,
@@ -15,7 +15,7 @@ Failsafe mode can be activated automatically or on request from the transmitter 
 
 Each mode Failsafe, requires a different way of NLM controller software.
 
-= Actions =
+== Actions ==
 
 For each of the fail-safe mode, you can assign the appropriate operation mode. Are possible to obtain:
    * Light switch strobe mode,
