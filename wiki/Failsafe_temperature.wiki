@@ -9,7 +9,7 @@ In the illustrated example, a temperature sensor used LM35 / TMP35. You can also
 
 == Connecting to a Temperature Sensor ==
 
-http://i.imgur.com/F22Hu3E.jpg
+http://i.imgur.com/47Di7ZX.jpg   http://i.imgur.com/F22Hu3E.jpg
 
 == Reading the Analog Temperature Data ==
 
@@ -36,6 +36,3 @@ To convert the voltage value at the temperature, use the following formula:
  if ( temperature > temperature_critical ) {
   # put here your code
  }</code>
-
-
-== Example Projects ==
