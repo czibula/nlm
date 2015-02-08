@@ -57,7 +57,10 @@ int led_56 = 4; // PIN 7 - LED 5-6  PWM
 boolean led_beacon;
 
 // LED 3-4
-// funkcja: 
+// funkcja: GPS Status
+// OFF - brak Fix
+// BLINK - GPS Fix 2D
+// ON - GPS Fix 3D
 int led_34 = 3; // PIN 6 - LED 3-4  PWM
 
 // LED 1-2
