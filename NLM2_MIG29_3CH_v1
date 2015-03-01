@@ -1,0 +1,347 @@
+/*
+  Oświetlenie modelu RC typu MIG-29 3CH v1 dla modułu 2.x
+  Program steruje układem diod LED 
+  w oparciu o sygnały z aparatury RC
+ 
+  Program przeznaczony dla Arduino, udostępniany jest na licencji OpenSource.
+  @autor: warp3r[at]wp.pl
+  @date 2014
+  @version 2.5.1.1
+
+  Copyright (c) 2014, Andrzej Donczew
+  All rights reserved.
+  Redistribution and use in source and binary forms, with or without modification, are permitted provided 
+  that the following conditions are met:
+  1. Redistributions of source code must retain the above copyright notice, this list of conditions and the following disclaimer.
+  2. Redistributions in binary form must reproduce the above copyright notice, this list of conditions and the following disclaimer 
+     in the documentation and/or other materials provided with the distribution.
+  3. Neither the name of the copyright holder nor the names of its contributors may be used to endorse 
+     or promote products derived from this software without specific prior written permission.
+  THIS SOFTWARE IS PROVIDED BY THE COPYRIGHT HOLDERS AND CONTRIBUTORS "AS IS" AND ANY EXPRESS OR IMPLIED WARRANTIES, 
+  INCLUDING, BUT NOT LIMITED TO, THE IMPLIED WARRANTIES OF MERCHANTABILITY AND FITNESS FOR A PARTICULAR PURPOSE ARE DISCLAIMED. 
+  IN NO EVENT SHALL THE COPYRIGHT HOLDER OR CONTRIBUTORS BE LIABLE FOR ANY DIRECT, INDIRECT, INCIDENTAL, SPECIAL, EXEMPLARY, 
+  OR CONSEQUENTIAL DAMAGES (INCLUDING, BUT NOT LIMITED TO, PROCUREMENT OF SUBSTITUTE GOODS OR SERVICES; LOSS OF USE, DATA, OR PROFITS; 
+  OR BUSINESS INTERRUPTION) HOWEVER CAUSED AND ON ANY THEORY OF LIABILITY, WHETHER IN CONTRACT, STRICT LIABILITY, 
+  OR TORT (INCLUDING NEGLIGENCE OR OTHERWISE) ARISING IN ANY WAY OUT OF THE USE OF THIS SOFTWARE, EVEN IF ADVISED 
+  OF THE POSSIBILITY OF SUCH DAMAGE.
+ */
+
+/*
+WYJŚCIA
+----------------------------------------------------------------
+LED  1 - ZIELONY - PRAWE SKRZYDŁO - ŚWIATŁO OBRYSOWE
+LED  2 - CZERWONY - LEWE SKRZYDŁO - ŚWIATŁO OBRYSOWE
+LED  3 - PODŚWIETLENIE TURBINY LEWA
+LED  4 - PODŚWIETLENIE TURBINY PRAWA
+LED  5 - CZERWONY - BEACON SPÓD
+LED  6 - CZERWONY - BEACON GÓRA
+LED  7 - BIAŁY - OGON/STATECZNIK PIONOWY - ŚWIATŁO OBRYSOWE
+LED  8 - zworka
+LED  9 - ŚWIATŁA DO LĄDOWANIA (max LED 1W)
+LED 10 - ŚWIATŁA DO LĄDOWANIA (max LED 1W)
+
+WEJŚCIA
+----------------------------------------------------------------
+CONN 1 - sygnał PWM z odbiornika RC, przełącznik trój-pozycyjny, światła nawigacyjne + beacon
+         pozycja przełącznika
+         0 - wszystkie światła wyłączone
+             (od durationS1min do durationS1mid+1)
+         1 - włączone światła pozycyjne, światła do lądowania i beacon wg stanu przełącznika na złączu CONN-2/CONN-3
+             (od durationS1mid do durationS1max+1)
+         2 - włączone światła pozycyjne i stroboskopowe, światła do lądowania i beacon wg stanu przełącznika na złączu CONN-2/CONN-3
+             (większe od durationS1max)
+CONN 2 - sygnał PWM z odbiornika RC, przełącznik dwu-pozycyjny, światła do lądowania
+             (mniejsze od durationS2mid)
+CONN 3 - sygnał PWM z odbiornika RC, potencjometr (drążek przepustnicy), automatyczne załączanie BEACON
+         sterowanie podświetleniem turbin
+CONN 4 - nie używane
+CONN 5 - nie używane
+*/
+
+int durationS1min = 800;
+int durationS1mid = 1300;
+int durationS1max = 1800;
+int durationS2mid = 1700;
+
+/* dla ATTiny 44 */
+byte max_FS = 5; // podawane w sekundach
+
+// LED 9-10
+// funkcja: załączenie oświetlenia podwozia
+//  jeśli pobór mocy LED jest większy niż 1W, należy zastosować inny obwód 
+//  lub sterować przełącznikiem załączającym oświetlenie
+//  o załączeniu świateł, decyduje zmienna led_gear
+byte led_09 = 6; // PIN 9 - LED 9
+byte led_10 = 7; // PIN 10 - LED 10
+boolean led_gear;
+
+// LED 7-8
+// funkcja: światło antykolilzyjne obrysowe BIAŁE
+// tylna część statecznika pionowego lub ogonu kadłuba
+// jeśli używane będzie jedno złącze, w drugie należy włożyć zworkę
+byte led_78 = 5; // PIN 8 - LED 7-8  PWM
+
+// LED 5-6
+// funkcja: BEACON światło sygnalizujące pracę silnika, spód i góra kadłuba lub statecznika pionowego
+//  zmienna led_beacon informuje czy zostały załączone silniki
+byte led_56 = 4; // PIN 7 - LED 5-6  PWM
+boolean led_beacon;
+
+// LED 3-4
+// funkcja: światła antykolizyjne BIAŁE stroboskopowe na obu skrzydłach skierowane w bok lub tył
+byte led_34 = 3; // PIN 6 - LED 3-4  PWM
+
+// LED 1-2
+// funkcja:  światła obrysowe, ZIELONE I CZERWONE na skrzydłach, skierowane bok 
+//  lub może być umieszczone na końcowej krawędzi skrzydeł w kierunku przód
+byte led_12 = 2; // PIN 5 - LED 1-2  PWM
+
+// CONN 1, Wejście sygnału S1  -  wejście z odbiornika RC, przełącznik trójpozycyjny
+// funkcja:  załączanie oświetlenia nawigacyjnego
+//   0 - światła obrysowe
+//   1 - światła wyłączone
+//   2 - pełne światła nawigacyjne
+byte input_Signal1 = 8; // PIN 11
+
+// CONN 2, Wejście sygnału S2  -  wejście z odbiornika RC, przełącznik dwupozycyjny
+// funkcja:  załączanie świateł do lądowania
+//  zsynchronizowane z kanałem RC odpowiedzialnym za wypuszczanie podwozia
+byte input_Signal2 = 10; // PIN 13
+
+// CONN 3, Wejście sygnału S3  -  wejście z odbiornika RC, kanał THR
+// funkcja:  załączanie BEACON z chwilą uruchamiania silnika
+//  minimalna wartość THR PWM dla której BEACON jest nieaktywny należy wprowadzić w zmiennej inThr_Signal
+byte input_Signal3 = 9; // PIN 12
+int inTrh_Signal = 1100;
+
+// CONN 4, Wejście sygnału S4
+//  dodatkowe złącze We/Wy
+byte input_Signal4 = 10; // PIN 2
+
+// CONN 5, Wejście sygnału S5
+//  dodatkowe złącze We/Wy
+byte input_Signal5 = 9; // PIN 3
+
+/* Stan PWM dla diod, więcej o PWM http://arduino.cc/en/Tutorial/PWM */
+// wartość dla wyłączonej diody
+const byte LEDOFF = 0;
+// wartość wypełnienia PWM dla diody "przygaszonej"
+const byte LEDON = 64; // 25%
+// wartość wypełnienia PWM dla pełnego oświetlenia
+const byte LEDBLINK = 192;  // 75%
+
+/* pomocnicze */
+byte input_Signal1State = 0;
+boolean goArmingState = false;
+boolean wait_state = true;
+unsigned long durationS1;
+unsigned long durationS2;
+unsigned long durationS3;
+int counterFS = 0;
+
+// EEPROM store
+//int addr = 0;
+//#include <EEPROM.h>
+// Ustawienia po uruchomieniu układu
+void setup() {
+  // ustawiamy stan IO, internal pull
+  pinMode(led_12, OUTPUT);     
+  pinMode(led_34, OUTPUT);     
+  pinMode(led_56, OUTPUT);     
+  pinMode(led_78, OUTPUT);     
+  pinMode(led_09, OUTPUT);     
+  pinMode(led_10, OUTPUT);     
+  pinMode(input_Signal1, INPUT); 
+  pinMode(input_Signal2, INPUT); 
+  pinMode(input_Signal3, INPUT); 
+  pinMode(input_Signal4, INPUT); 
+  pinMode(input_Signal5, INPUT); 
+  digitalWrite(input_Signal1, LOW);  
+  digitalWrite(input_Signal2, LOW);  
+  digitalWrite(input_Signal3, LOW);  
+  digitalWrite(input_Signal4, LOW);  
+  digitalWrite(input_Signal5, LOW);  
+  counterFS = 0;
+  led_beacon = false; 
+  led_gear = false;
+  LEDS_Failsafe(); // domyślnie po uruchomieniu
+//  EEPROM.write(addr, counterFS);
+}
+
+/* Wyłączenie wszystkich świateł */
+void LEDS_OFF() {
+  analogWrite(led_12, LEDOFF);
+  analogWrite(led_34, LEDOFF);  
+  analogWrite(led_56, LEDOFF);
+  analogWrite(led_78, LEDOFF);
+  analogWrite(led_09, LEDOFF);
+  analogWrite(led_10, LEDOFF);
+}
+
+/* Włączenie wszystkich świateł */
+void LEDS_ON() {
+  analogWrite(led_12, LEDBLINK);
+  analogWrite(led_34, LEDBLINK);  
+  analogWrite(led_56, LEDBLINK);
+  analogWrite(led_78, LEDBLINK);
+  analogWrite(led_09, LEDBLINK);
+  analogWrite(led_10, LEDBLINK);
+}
+
+/* Miganie wszystkich świateł - brak sygnału z odbiornika */
+void LEDS_Failsafe() {
+  LEDS_ON();
+  delay(50);
+  LEDS_OFF();
+  delay(40);
+  LEDS_ON();
+  delay(50);
+  LEDS_OFF();
+  delay(40);
+  LEDS_ON();
+  delay(50);
+  LEDS_OFF();
+}
+
+void EngineLight() {
+  //durationS3 = pulseIn(input_Signal3, HIGH);
+  analogWrite( led_34, map ( pulseIn(input_Signal3, HIGH), 1080, 1500, 0, 250 ));
+}
+
+/* Aktywacja wyłącznie świateł obrysowych - tylko pozycyjne */
+void LEDS_Mode1() {
+  analogWrite(led_12, LEDON); // włączone obrysowe 
+  analogWrite(led_56, LEDOFF); 
+  analogWrite(led_78, LEDON);// tylne antykolizyjne  
+  if (led_gear !=false) {
+    analogWrite(led_09, LEDBLINK);
+    analogWrite(led_10, LEDBLINK);
+  } else {
+    analogWrite(led_09, LEDOFF);
+    analogWrite(led_10, LEDOFF);
+  }
+
+  if (led_beacon !=false) {
+    analogWrite(led_56, LEDBLINK);
+    delay(50);EngineLight();
+    analogWrite(led_56, LEDOFF);
+    delay(50);EngineLight();
+    analogWrite(led_56, LEDBLINK);
+    delay(50);EngineLight();
+    analogWrite(led_56, LEDOFF);
+    delay(50);EngineLight();
+    analogWrite(led_56, LEDBLINK);
+    delay(50);EngineLight();
+    analogWrite(led_56, LEDOFF);
+//    delay(700);
+    delay(50);EngineLight();
+    delay(50);EngineLight();
+    delay(50);EngineLight();
+    delay(50);EngineLight();
+    delay(50);EngineLight();
+    delay(50);EngineLight();
+    delay(50);EngineLight();
+    delay(50);EngineLight();
+    delay(50);EngineLight();
+    delay(50);EngineLight();
+    delay(50);EngineLight();
+    delay(50);EngineLight();
+    delay(50);EngineLight();
+    delay(50);EngineLight();
+    
+  }
+}
+
+/* Aktywacja pełnego cyklu oświetlenia */
+void LEDS_Mode2() {
+  if (led_gear !=false) {
+    analogWrite(led_09, LEDBLINK);
+    analogWrite(led_10, LEDBLINK);
+  } else {
+    analogWrite(led_09, LEDOFF);
+    analogWrite(led_10, LEDOFF);
+  }
+  analogWrite(led_78, LEDBLINK);
+  delay(50);EngineLight();
+  analogWrite(led_78, LEDOFF);
+  delay(50);EngineLight();
+  analogWrite(led_12, LEDBLINK);
+  analogWrite(led_78, LEDBLINK);
+  delay(50);EngineLight();
+  analogWrite(led_12, LEDOFF);
+  analogWrite(led_78, LEDOFF);
+  delay(50);EngineLight();
+  analogWrite(led_12, LEDBLINK);
+  analogWrite(led_78, LEDBLINK);
+  delay(50);EngineLight();
+  analogWrite(led_12, LEDOFF);
+  analogWrite(led_78, LEDON);
+  delay(50);EngineLight();
+  analogWrite(led_12, LEDBLINK);
+  delay(50);EngineLight();
+  analogWrite(led_12, LEDON);
+  delay(50);EngineLight();
+  // 400 ms
+  if (led_beacon !=false) analogWrite(led_56, LEDBLINK);
+  delay(50);EngineLight();
+  analogWrite(led_56, LEDOFF);
+  delay(50);EngineLight();
+  if (led_beacon !=false) analogWrite(led_56, LEDBLINK);
+  delay(50);EngineLight();
+  analogWrite(led_56, LEDOFF);
+  delay(50);EngineLight();
+  if (led_beacon !=false) analogWrite(led_56, LEDBLINK);
+  delay(50);EngineLight();
+  analogWrite(led_56, LEDOFF);
+//  delay(350);
+  delay(50);EngineLight();
+  delay(50);EngineLight();
+  delay(50);EngineLight();
+  delay(50);EngineLight();
+  delay(50);EngineLight();
+  delay(50);EngineLight();
+  delay(50);EngineLight();
+
+  // 1000 ms
+}
+
+byte mode = 0;
+/* w tej pętli, program wykonuje się w nieskończoność */
+void loop() {
+  // oczekiwanie na sygnał z odbiornika RC
+  durationS1 = pulseIn(input_Signal1, HIGH);
+
+  if ((durationS1 > durationS1min)and(durationS1 < (durationS1mid+1))) {// CONN-1, przełącznik w aparaturze na poz. 1
+  // włączone światła pozycyjne, światła do lądowania wg stanu przełącznika na złączy CONN-2
+    LEDS_OFF(); // przełącznik w aparaturze na poz. 1
+    mode = 0;
+  } else if ((durationS1 > durationS1mid )and(durationS1 < (durationS1max+1))){// CONN-1, przełącznik w aparaturze na poz. 2
+  // włączone światła pozycyjne i stroboskopowe, światła do lądowania wg stanu przełącznika na złączy CONN-2
+    if (led_gear !=false) { analogWrite(led_09, LEDBLINK);analogWrite(led_10, LEDBLINK);}
+    LEDS_Mode1();
+    mode = 1; 
+  } else if (durationS1 > durationS1max ) {
+    if (led_gear !=false) { analogWrite(led_09, LEDBLINK);analogWrite(led_10, LEDBLINK);}
+    LEDS_Mode2(); // przełącznik w aparaturze na poz. 2
+    mode = 2;
+  } else { // Failsafe
+  // błyski stroboskopowe na wszystkich światłach na obwodach LED 1-9 gdy brak sygnału PWM z odbiornika RC   
+    LEDS_Failsafe();
+    mode = 0;  
+  }  
+
+  if (counterFS < 1) {
+    // odczytujemy wartość PWM dla kanału sterowania podwoziem ze złącza CONN-2
+    // załączenie świateł do lądowania obwód LED 9
+    durationS2 = pulseIn(input_Signal2, HIGH);
+    led_gear = (durationS2 < durationS2mid) ? true : false;
+    // odczytujemy wartość PWM dla kanału sterowania silnikiem ze złącza CONN-3
+    // załączenie BEACON obwód LED 5-6
+    durationS3 = pulseIn(input_Signal3, HIGH);
+    led_beacon = (durationS3 > inTrh_Signal) ? true : false;
+    if (mode > 0) EngineLight();
+  }
+  /**/
+}
+/* a tu jest koniec kodu v2.5.1.1 */
+
