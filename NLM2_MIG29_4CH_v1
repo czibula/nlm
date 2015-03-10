@@ -6,7 +6,7 @@
   Program przeznaczony dla Arduino, udostępniany jest na licencji OpenSource.
   @autor: warp3r[at]wp.pl
   @date 2014
-  @version 2.5.1.2
+  @version 2.5.1.3
 
   Copyright (c) 2014, Andrzej Donczew
   All rights reserved.
@@ -61,7 +61,7 @@ CONN 5 - nie używane
 int durationS1min = 800;
 int durationS1mid = 1300;
 int durationS1max = 1800;
-int durationS2mid = 1700;
+int durationS2mid = 1300;
 int durationS4mid = 1300;
 
 /* dla ATTiny 44 */
@@ -70,7 +70,7 @@ byte max_FS = 5; // podawane w sekundach
 // LED 10
 // funkcja: załączenie podświetlenia kabiny
 byte led_10 = 7; // PIN 10 - LED 10
-byte led_cabin;
+boolean led_cabin;
 
 // LED 9
 // funkcja: załączenie oświetlenia podwozia
@@ -121,11 +121,11 @@ int inTrh_Signal = 1100;
 
 // CONN 4, Wejście sygnału S4
 //  dodatkowe złącze We/Wy
-byte input_Signal4 = 10; // PIN 2
+byte input_Signal4 = 0; // PIN 2
 
 // CONN 5, Wejście sygnału S5
 //  dodatkowe złącze We/Wy
-byte input_Signal5 = 9; // PIN 3
+byte input_Signal5 = 1; // PIN 3
 
 /* Stan PWM dla diod, więcej o PWM http://arduino.cc/en/Tutorial/PWM */
 // wartość dla wyłączonej diody
@@ -323,7 +323,7 @@ byte mode = 0;
 void loop() {
   // oczekiwanie na sygnał z odbiornika RC
   durationS1 = pulseIn(input_Signal1, HIGH);
-
+  if (durationS1 > 0) { counterFS = 0;} else { ++counterFS;}
   if ((durationS1 > durationS1min)and(durationS1 < (durationS1mid+1))) {// CONN-1, przełącznik w aparaturze na poz. 1
   // włączone światła pozycyjne, światła do lądowania wg stanu przełącznika na złączy CONN-2
     LEDS_OFF(); // przełącznik w aparaturze na poz. 1
@@ -359,11 +359,11 @@ void loop() {
     // odczytujemy wartość PWM dla kanału sterowania podświetleniem kabiny ze złącza CONN-4
     // załączenie BEACON obwód LED 10
     durationS4 = pulseIn(input_Signal4, HIGH);
-    led_cabin = (durationS4 > durationS4mid) ? true : false;
+    led_cabin = (durationS4 < durationS4mid) ? true : false;
     
     if (mode > 0) EngineLight();
   }
   /**/
 }
-/* a tu jest koniec kodu v2.5.1.2 */
+/* a tu jest koniec kodu v2.5.1.3 */
 
