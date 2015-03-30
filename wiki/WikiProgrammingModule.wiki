@@ -23,9 +23,13 @@ http://i.imgur.com/qwaxiaM.jpg
 
 * USBASP *
 
-==== NLM2 Module Programming with USBASP ====
+==== NLM2 Module Programming with USBASP v1 ====
 
 http://i.imgur.com/OkV8Wvn.jpg
+
+==== NLM2 Module Programming with USBASP v2 ====
+
+http://i.imgur.com/mQrV5OL.jpg
 
 == Details ==
 
