@@ -2,6 +2,10 @@
 
 = Video Examples =
 
+<wiki:video url="https://www.youtube.com/watch?v=Q--EY1fXhRg"/> 
+
+<wiki:video url="https://www.youtube.com/watch?v=TvYgJHqDy8I"/> 
+
 <wiki:video url="https://www.youtube.com/watch?v=p7iLgjAy32Y"/> 
 
 <wiki:video url="https://www.youtube.com/watch?v=txfMmqYapUw"/>
