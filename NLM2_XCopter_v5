@@ -1,0 +1,297 @@
+/*
+ Oświetlenie modelu RC typu Quad/Hexacopter dla modułu NLM2
+ Program steruje układem diod LED 
+ w oparciu o sygnały z aparatury RC
+ 
+ Program przeznaczony dla Arduino, udostępniany jest na licencji OpenSource.
+ @autor: warp3r[at]wp.pl
+ @date 2015
+ @version 2.3.5
+ */
+
+/*
+WYJŚCIA
+ ----------------------------------------------------------------
+ LED  1 - ZIELONY  - PRAWE RAMIE - ŚWIATŁO OBRYSOWE
+ LED  2 - CZERWONY - LEWE RAMIE  - ŚWIATŁO OBRYSOWE (lub zworka jeśli obie diody podłączone są do wyjścia LED-1)
+ LED  3 - BIAŁE - ŚWIATŁO DO LĄDOWANIA
+ LED  4 - BIAŁE - ŚWIATŁO DO LĄDOWANIA (lub zworka)
+ LED  5 - CZERWONY - BEACON SPÓD
+ LED  6 - CZERWONY - BEACON GÓRA (lub zworka)
+ LED  7 - BIAŁY - OGON/TYŁ GIMBALA - ŚWIATŁO OBRYSOWE
+ LED  8 - (zworka)
+ LED  9 - BIAŁY - PRAWE RAMIE - ŚWIATŁO ANTYKOLIZYJNE
+ LED 10 - BIAŁY - LEWE RAMIE  - ŚWIATŁO ANTYKOLIZYJNE
+ 
+ WEJŚCIA
+ ----------------------------------------------------------------
+ CONN 1 - OFF(All lights) - ON(position) - PULSE(position+strobe, Anti-collision)
+ CONN 2 - ON(gear down) - OFF(gear up)
+ CONN 3 - sygnał ze złącza Throttle dla automatycznego załączania Beacon 
+ CONN 4 - nie używane
+ CONN 5 - nie używane
+ */
+
+/* dla ATTiny 44 */
+
+// LED 10
+//  funkcja:  światła antykolizyjne BIAŁE stroboskopowe na obu ramionach skierowane w bok i tył
+int led_10 = 7; // PIN 10 - LED 10
+int max_FS = 5; // podawane w sekundach
+
+// LED 9
+// funkcja: światła antykolizyjne BIAŁE stroboskopowe na obu ramionach skierowane w bok i tył
+int led_09 = 6; // PIN 9 - LED 9
+boolean led_gear;
+
+// LED 7-8
+// funkcja: światło antykolilzyjne obrysowe BIAŁE
+// tylna część skadłuba lub gimbala
+// jeśli używane będzie jedno złącze, w drugie należy włożyć zworkę
+int led_78 = 5; // PIN 8 - LED 7-8  PWM
+
+// LED 5-6
+// funkcja: BEACON światło sygnalizujące pracę silnika, góra i spód kadłuba lub gimbala
+//  zmienna led_beacon informuje czy zostały załączone silniki
+int led_56 = 4; // PIN 7 - LED 5-6  PWM
+boolean led_beacon;
+
+// LED 3-4
+// funkcja: GPS Status
+// OFF - brak Fix
+// BLINK - GPS Fix 2D
+// ON - GPS Fix 3D
+int led_34 = 3; // PIN 6 - LED 3-4  PWM
+
+// LED 1-2
+// funkcja:  światła obrysowe, ZIELONE I CZERWONE na ramionach, skierowane bok 
+int led_12 = 2; // PIN 5 - LED 1-2  PWM
+
+// CONN 1, Wejście sygnału S1  
+int input_Signal1 = 8; // PIN 11
+
+// CONN 2, Wejście sygnału S2  -  APM2 złącze A6
+// funkcja:  załączanie świateł do lądowania
+//  zsynchronizowane z kanałem RC odpowiedzialnym za wypuszczanie podwozia
+int input_Signal2 = 10; // PIN 13
+
+// CONN 3, Wejście sygnału S3  -  APM2 złącze A7
+// funkcja:  załączanie świateł antykolizyjnych po uzbrojeniu silników
+int input_Signal3 = 9; // PIN 12
+int inTrh_Signal = 1100;
+
+
+// CONN 4, Wejście sygnału S4
+//  dodatkowe złącze We/Wy
+int input_Signal4 = 0; // PIN 2
+
+// CONN 5, Wejście sygnału S5
+//  dodatkowe złącze We/Wy
+int input_Signal5 = 1; // PIN 3
+
+/* Stan PWM dla diod, więcej o PWM http://arduino.cc/en/Tutorial/PWM */
+// wartość dla wyłączonej diody
+const byte LEDOFF = 0;
+// wartość wypełnienia PWM dla diody "przygaszonej"
+const byte LEDON = 96; 
+// wartość wypełnienia PWM dla pełnego oświetlenia
+const byte LEDBLINK = 224; 
+// wartość wypełnienia PWM dla oświetlenia do lądowania
+const byte LEDGEAR = 192; 
+
+int durationS1min = 900;
+int durationS1mid = 1300;
+int durationS1max = 1900;
+int durationS2mid = 1500;
+
+/* pomocnicze */
+int input_SignalArming = input_Signal3;
+int input_Signal1State = 0;
+int input_SignalArmingState = 0;
+boolean goArmingState = false;
+boolean wait_state = true;
+unsigned long durationS1;
+unsigned long durationS2;
+unsigned long durationS3;
+int counterFS = 0;
+
+// Ustawienia po uruchomieniu układu
+void setup() {
+  // ustawiamy stan IO, internal pull
+  pinMode(led_12, OUTPUT);     
+  pinMode(led_34, OUTPUT);     
+  pinMode(led_56, OUTPUT);     
+  pinMode(led_78, OUTPUT);     
+  pinMode(led_09, OUTPUT);     
+  pinMode(led_10, OUTPUT);     
+  pinMode(input_Signal1, INPUT); 
+  pinMode(input_Signal2, INPUT); 
+  pinMode(input_Signal3, INPUT); 
+  pinMode(input_Signal4, INPUT); 
+  pinMode(input_Signal5, INPUT); 
+  digitalWrite(input_Signal1, LOW);  
+  digitalWrite(input_Signal2, LOW);  
+  digitalWrite(input_Signal3, LOW);  
+  digitalWrite(input_Signal4, LOW);  
+  digitalWrite(input_Signal5, LOW);  
+  counterFS = 0;
+  led_beacon = false; 
+  led_gear = false;
+}
+
+/* Wyłączenie wszystkich świateł */
+void LEDS_OFF() {
+  analogWrite(led_12, LEDOFF);
+  analogWrite(led_34, LEDOFF);  
+  analogWrite(led_56, LEDOFF);
+  analogWrite(led_78, LEDOFF);
+  analogWrite(led_09, LEDOFF);
+  analogWrite(led_10, LEDOFF);
+}
+
+/* Włączenie wszystkich świateł */
+void LEDS_ON() {
+  analogWrite(led_12, LEDBLINK);
+  analogWrite(led_34, LEDBLINK);  
+  analogWrite(led_56, LEDBLINK);
+  analogWrite(led_78, LEDBLINK);
+  analogWrite(led_09, LEDBLINK);
+  analogWrite(led_10, LEDBLINK);
+}
+
+/* Miganie wszystkich świateł - brak sygnału z odbiornika */
+void LEDS_Failsafe() {
+  LEDS_ON();
+  delay(50);
+  LEDS_OFF();
+  delay(50);
+  LEDS_ON();
+  delay(50);
+  LEDS_OFF();
+  delay(50);
+  LEDS_ON();
+  delay(50);
+  LEDS_OFF();
+}
+
+/* Aktywacja wyłącznie świateł obrysowych - tylko pozycyjne */
+void LEDS_Mode1() {
+  analogWrite(led_12, LEDON);
+  analogWrite(led_09, LEDOFF);  
+  analogWrite(led_10, LEDOFF);  
+  analogWrite(led_56, LEDOFF); 
+  analogWrite(led_78, LEDON);  
+  if (led_gear !=false) {
+    analogWrite(led_34, LEDGEAR);
+  } else {
+    analogWrite(led_34, LEDOFF);
+  }
+  if (led_beacon !=false) {
+    analogWrite(led_56, LEDBLINK);
+    delay(50);
+    analogWrite(led_56, LEDOFF);
+    delay(50);
+    analogWrite(led_56, LEDBLINK);
+    delay(50);
+    analogWrite(led_56, LEDOFF);
+    delay(50);  
+    analogWrite(led_56, LEDBLINK);
+    delay(50);
+    analogWrite(led_56, LEDOFF);
+    delay(750);
+  }
+}
+
+/* Aktywacja pełnego cyklu oświetlenia */
+void LEDS_Mode2() {
+  if (led_gear !=false) {
+    analogWrite(led_34, LEDGEAR);
+  } else {
+    analogWrite(led_34, LEDOFF);
+  }
+  
+  analogWrite(led_09, LEDBLINK); analogWrite(led_10, LEDBLINK); 
+  delay(50);
+  analogWrite(led_78, LEDBLINK);
+  analogWrite(led_09, LEDOFF);   analogWrite(led_10, LEDOFF); 
+  delay(50);
+  analogWrite(led_12, LEDBLINK);
+  analogWrite(led_09, LEDBLINK); analogWrite(led_10, LEDBLINK); 
+  analogWrite(led_78, LEDOFF);
+  delay(50);
+  analogWrite(led_12, LEDOFF);
+  analogWrite(led_09, LEDOFF);   analogWrite(led_10, LEDOFF); 
+  analogWrite(led_78, LEDON);
+  delay(50);
+  analogWrite(led_12, LEDBLINK);
+  analogWrite(led_78, LEDOFF);
+  delay(50);
+  analogWrite(led_12, LEDOFF);
+  analogWrite(led_78, LEDBLINK);
+  delay(50);
+  analogWrite(led_12, LEDBLINK);
+  analogWrite(led_78, LEDOFF);
+  delay(50);
+  analogWrite(led_12, LEDON);
+  analogWrite(led_78, LEDBLINK);
+  delay(50);
+  analogWrite(led_09, LEDBLINK); analogWrite(led_10, LEDBLINK);
+  analogWrite(led_78, LEDON);
+  delay(50);
+  analogWrite(led_09, LEDOFF);   analogWrite(led_10, LEDOFF); 
+  // 450 ms
+  if (led_beacon !=false) analogWrite(led_56, LEDBLINK);
+  delay(50);
+  analogWrite(led_09, LEDBLINK); analogWrite(led_10, LEDBLINK);
+  analogWrite(led_56, LEDOFF);
+  delay(50);
+  if (led_beacon !=false) analogWrite(led_56, LEDBLINK);
+  analogWrite(led_09, LEDOFF);   analogWrite(led_10, LEDOFF);
+  delay(50);
+  analogWrite(led_56, LEDOFF);
+  delay(50);  
+  if (led_beacon !=false) analogWrite(led_56, LEDBLINK);
+  delay(50);
+  analogWrite(led_56, LEDOFF);
+
+  delay(300);
+  // 1000 ms
+}
+
+/* w tej pętli, program wykonuje się w nieskończoność */
+void loop() {
+  // oczekiwanie na sygnał z odbiornika RC
+  durationS1 = pulseIn(input_Signal1, HIGH);
+  // jeśli odbiornik dla braku sygnału posiada inną wartość niż 0, ustawić właściwą
+  if (durationS1 > 0) { counterFS = 0;} else { ++counterFS;}  
+  if ((durationS1 > durationS1min)and(durationS1 < (durationS1mid+1))) {
+    // CONN-1, przełącznik w aparaturze na poz. 0
+    led_beacon = false;
+    LEDS_OFF(); 
+  } else if ((durationS1 > durationS1mid )and(durationS1 < (durationS1max+1))){
+    // CONN-1, przełącznik w aparaturze na poz. 1
+    // włączone światła pozycyjne, światła do lądowania i Beacon wg stanu na złączach CONN-2/3
+    LEDS_Mode1(); 
+  } else if (durationS1 > durationS1max ) {
+    // CONN-1, przełącznik w aparaturze na poz. 2
+    // włączone światła pozycyjne i stroboskopowe, światła do lądowania i Beacon wg stanu na złączach CONN-2/3
+    LEDS_Mode2(); 
+  } else { // Failsafe
+  // błyski stroboskopowe na wszystkich światłach na obwodach LED 1-10 
+  // gdy brak sygnału PWM z odbiornika RC na złączu CONN-1   
+    LEDS_Failsafe();  
+  }  
+  if (counterFS < 1) {
+    // odczytujemy wartość PWM dla kanału sterowania podwoziem ze złącza CONN-2
+    // załączenie świateł do lądowania obwód LED 3-4
+    durationS2 = pulseIn(input_Signal2, HIGH);
+    led_gear = (durationS2 < durationS2mid) ? true : false;
+    // odczytujemy wartość PWM dla stanu drązka przepustnicy ze złącza CONN-3
+    durationS3 = pulseIn(input_Signal3, HIGH);
+    led_beacon = (durationS3 > inTrh_Signal) ? true : false;    
+  }
+  
+  /**/
+}
+/* a tu jest koniec kodu v2.3.5 */
+
