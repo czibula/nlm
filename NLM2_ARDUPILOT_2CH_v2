@@ -6,7 +6,7 @@
  Program przeznaczony dla Arduino, udostępniany jest na licencji OpenSource.
  @autor: warp3r[at]wp.pl
  @date 2014
- @version 2.1.4.1
+ @version 2.1.4.2
  */
 
 /*
@@ -183,10 +183,10 @@ void LEDS_Failsafe() {
 /* Aktywacja wyłącznie świateł obrysowych - tylko pozycyjne */
 void LEDS_Mode1() {
   if (led_lights != true) { LEDS_OFF(); return;}
-  analogWrite(led_12, LEDON); // włączone obrysowe 
+  analogWrite(led_12, LEDON); 
   analogWrite(led_34, LEDOFF);  
   analogWrite(led_56, LEDOFF); 
-  analogWrite(led_78, LEDON);// tylne antykolizyjne  
+  analogWrite(led_78, LEDON);  
   if (led_gear != false) {
     analogWrite(led_09, LEDBLINK);
   } 
@@ -266,7 +266,7 @@ void CheckA7(){
   goArmingState = true;
  // wait_state = false;
   input_SignalArmingState = digitalRead(input_SignalArming);
-  delay(1);        // delay in between reads for stability
+  delay(1);     
   if ((input_SignalArmingState != HIGH)and(wait_state != true)) {
     wait_state = true; 
     goArmingState = false;
@@ -287,7 +287,7 @@ void loop() {
       goArmingState = true;
       for (int i=0; i<11; i++) {
         input_SignalArmingState = digitalRead(input_SignalArming);
-        delay(1);        // delay in between reads for stability
+        delay(1);    
         if (input_SignalArmingState != HIGH) { goArmingState = false; wait_state = true; break;}
         delay(120);
       }
@@ -307,10 +307,10 @@ void loop() {
   durationS1 = pulseIn(input_Signal1, HIGH);
   if (durationS1 > 0) { counterFS = 0; analogWrite(led_10, LEDOFF);}else { ++counterFS; wait_state = false;}
   if ((durationS1 >900)and(durationS1 < 1601)) { 
-    led_lights = false; // jest sygnał z aparatury w odbiorniku RC, przełącznik poz.0
+    led_lights = false; // jest sygnał z aparatury w odbiorniku RC, przełącznik poz.OFF
   } 
   else if (durationS1 >1600) {
-    led_lights = true; // przełącznik w aparaturze na poz. 2
+    led_lights = true; // przełącznik w aparaturze na poz. ON
   } 
   else {
     led_lights = false;
@@ -331,6 +331,6 @@ void loop() {
   led_beacon = ( goArmingState != false) ? true : false;
   /**/
 }
-/* a tu jest koniec kodu v2.1.4.1 */
+/* a tu jest koniec kodu v2.1.4.2 */
 
 
