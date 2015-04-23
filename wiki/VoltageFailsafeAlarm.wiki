@@ -9,7 +9,7 @@ http://i.imgur.com/f2gW5jZ.jpg
 The resistors are selected by their own divider what we want. In the example I used resistors R-1 10kOhm and R-2 2kOhm. Resistors have their different tolerance, so be sure to measure the resistance of the actual values by typing in the code.
 
 An application using an adapter for measuring voltage
-http://i.imgur.com/G7YB79a.jpg
+http://i.imgur.com/G7YB79a.jpg_
 
 
 The code in your own program based on the examples for NLM2, you need to declare (enter below):
